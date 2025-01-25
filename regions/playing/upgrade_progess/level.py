@@ -1,9 +1,9 @@
 from constants import *
 from regions import Region
 
-class Max(Region):
-    id = "playing.upgrade_progress.max"
+class Level(Region):
+    id = "playing.upgrade_progress.level"
     x = 168
-    y = 45
+    y = 6
     width = 60
     height = 24

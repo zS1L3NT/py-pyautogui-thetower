@@ -9,6 +9,6 @@ class Categories(Region):
     width = 584
     height = 54
 
-    attack = Category(0, 13)
-    defence = Category(1, 15)
-    utility = Category(2, 11)
+    attack = Category(0)
+    defence = Category(1)
+    utility = Category(2)

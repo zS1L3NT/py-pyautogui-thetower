@@ -16,7 +16,7 @@ def image_difference(a: Image, b: Image):
     return ahash - bhash
 
 class Region:
-    name = ""
+    id = ""
     x = 0
     y = 0
     width = 0
@@ -39,11 +39,20 @@ class Region:
 
         ui.leftClick(self.x + self.width / 2, self.y + self.height / 2)
 
-    def read(self):
-        screenshot = ui.screenshot(region=self.compact()).convert("RGB")
-        processed = Image.new("RGB", screenshot.size)
-        processed.putdata([isolate_white(pixel) for pixel in screenshot.getdata()])
-        return pytesseract.image_to_string(processed, config="--psm 7")
+    def read(self, process = True, psm = 7, characters = None):
+        image = ui.screenshot(region=self.compact()).convert("RGB")
+
+        processed = Image.new("RGB", image.size)
+        processed.putdata([isolate_white(pixel) if process else pixel for pixel in image.getdata()])
+
+        config = " ".join([
+            value for value in [
+                f"--psm {psm}",
+                f"-c tessedit_char_whitelist=\"{characters}\"" if characters else None
+            ] if value is not None
+        ])
+
+        return pytesseract.image_to_string(processed, config=config)
 
     def cascade(self):
         properties = [getattr(self, key) for key in dir(self)]

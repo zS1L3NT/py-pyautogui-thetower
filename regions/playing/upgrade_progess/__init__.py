@@ -1,7 +1,6 @@
 from constants import *
 from regions import Region
-from regions.playing.upgrade_progess.current import Current
-from regions.playing.upgrade_progess.max import Max
+from regions.playing.upgrade_progess.level import Level
 
 class UpgradeProgress(Region):
     id = "playing.upgrade_progress"
@@ -10,5 +9,4 @@ class UpgradeProgress(Region):
     width = 250
     height = 75
 
-    current = Current()
-    max = Max()
+    level = Level()
