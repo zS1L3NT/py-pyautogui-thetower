@@ -1,4 +1,4 @@
-#!/Users/mac/Projects/py-appium-thetower/bin/python3.13
+#!/Users/mac/Projects/py-pyautogui-thetower/bin/python3.13
 from __future__ import absolute_import, division, print_function
 
 from PIL import Image

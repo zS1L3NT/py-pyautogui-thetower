@@ -35,7 +35,7 @@ class Region:
 
             if difference > 5:
                 print(f"You are not clicking {self.id}!! {{ difference: {difference} }}")
-                exit()
+                return
 
         ui.leftClick(self.x + self.width / 2, self.y + self.height / 2)
 

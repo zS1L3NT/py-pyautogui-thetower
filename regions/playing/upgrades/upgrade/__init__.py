@@ -36,3 +36,6 @@ class Upgrade(Region):
                 self.id = f"last_{self.id}"
 
         self.id = f"playing.upgrades.{self.id}"
+
+    def click(self):
+        self.value.click()

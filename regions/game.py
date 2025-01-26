@@ -2,6 +2,7 @@ from constants import *
 from regions import Region
 from regions.home import HomeScreen
 from regions.playing import PlayingScreen
+from regions.game_over import GameOverScreen
 
 class GameRegion(Region):
     x = GAME_X
@@ -11,3 +12,4 @@ class GameRegion(Region):
 
     home = HomeScreen()
     playing = PlayingScreen()
+    game_over = GameOverScreen()
