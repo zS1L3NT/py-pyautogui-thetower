@@ -1,34 +1,31 @@
 from engine.game.data.upgrades.categories import Category
-from engine.game.data.upgrades.upgrade import Upgrade, Type
+from engine.game.data.upgrades.upgrade import Upgrade
 
 class Utility(Category):
     category = "utility"
 
-    cash_bonus = Upgrade(Type.MULTIPLIER, 149)
-    cash_per_wave = Upgrade(Type.NUMBER, 149)
-    coins_per_kill_bonus = Upgrade(Type.MULTIPLIER, 149)
-    coins_per_wave = Upgrade(Type.NUMBER, 149)
-    free_attack_upgrade = Upgrade(Type.PERCENTAGE, 99)
-    free_defence_upgrade = Upgrade(Type.PERCENTAGE, 99)
-    free_utility_upgrade = Upgrade(Type.PERCENTAGE, 99)
-    interest_per_wave = Upgrade(Type.PERCENTAGE, 99)
-    recovery_amount = Upgrade(Type.PERCENTAGE, 300)
-    max_recovery = Upgrade(Type.MULTIPLIER, 500)
-    package_chance = Upgrade(Type.PERCENTAGE, 60)
+    cash_bonus = Upgrade.multiplier(149)
+    cash_per_wave = Upgrade.number(149)
+    coins_per_kill_bonus = Upgrade.multiplier(149)
+    coins_per_wave = Upgrade.number(149)
+    free_attack_upgrade = Upgrade.percentage(99)
+    free_defence_upgrade = Upgrade.percentage(99)
+    free_utility_upgrade = Upgrade.percentage(99)
+    interest_per_wave = Upgrade.percentage(99)
+    recovery_amount = Upgrade.percentage(300)
+    max_recovery = Upgrade.multiplier(500)
+    package_chance = Upgrade.percentage(60)
 
-    def __init__(self):
-        self.list = [
-            self.cash_bonus,
-            self.cash_per_wave,
-            self.coins_per_kill_bonus,
-            self.coins_per_wave,
-            self.free_attack_upgrade,
-            self.free_defence_upgrade,
-            self.free_utility_upgrade,
-            self.interest_per_wave,
-            self.recovery_amount,
-            self.max_recovery,
-            self.package_chance,
-        ]
-
-        super().__init__()
+    upgrades = [
+        cash_bonus,
+        cash_per_wave,
+        coins_per_kill_bonus,
+        coins_per_wave,
+        free_attack_upgrade,
+        free_defence_upgrade,
+        free_utility_upgrade,
+        interest_per_wave,
+        recovery_amount,
+        max_recovery,
+        package_chance
+    ]

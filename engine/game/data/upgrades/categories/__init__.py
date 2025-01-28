@@ -3,7 +3,7 @@ from engine.game.data.upgrades.upgrade import Upgrade
 
 class Category:
     category = ""
-    list: List["Upgrade"]
+    upgrades: List["Upgrade"]
 
     def __init__(self):
         for key in dir(self):
@@ -13,4 +13,4 @@ class Category:
                 value.category = self.category
     
     def __str__(self):
-        return f"{{\n{"\n".join([f"      {upgrade}" for upgrade in self.list])}\n    }}"
+        return f"{{\n{"\n".join([f"      {upgrade}" for upgrade in self.upgrades])}\n    }}"

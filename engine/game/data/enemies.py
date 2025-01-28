@@ -1,4 +1,4 @@
-from engine.game.data.cleaner import Cleaner
+from utilities.parser import Parser
 
 class Enemies:
     wave = 0
@@ -6,8 +6,10 @@ class Enemies:
     health = 0
 
     def __setattr__(self, name, value):
-        number = Cleaner(value).number()
-        if not number: return
+        number = Parser(value).number()
+        if not number:
+            raise ValueError(f"Failed to parse {name} value: {value}")    
+
         super().__setattr__(name, number)
 
     def __str__(self):

@@ -1,4 +1,4 @@
-from engine.game.data.cleaner import Cleaner
+from utilities.parser import Parser
 
 class Player:
     damage = 0
@@ -8,17 +8,23 @@ class Player:
 
     def __setattr__(self, name, value):
         if name == "damage":
-            number = Cleaner(value).number()
-            if not number: return
+            number = Parser(value).number()
+            if not number:
+                raise ValueError(f"Failed to parse {name} value: {value}")    
+
             super().__setattr__(name, number)
         elif name == "healths":
-            numbers = Cleaner(value).number_slash_number()
-            if not numbers: return
+            numbers = Parser(value).number_slash_number()
+            if not numbers:
+                raise ValueError(f"Failed to parse healths value: {value}")    
+
             super().__setattr__("health", numbers[0])
             super().__setattr__("max_health", numbers[1])
         elif name == "health_regen":
-            number = Cleaner(value).number_slash_s()
-            if not number: return
+            number = Parser(value).per_second()
+            if not number:
+                raise ValueError(f"Failed to parse {name} value: {value}")    
+
             super().__setattr__(name, number)
 
     def __str__(self):
