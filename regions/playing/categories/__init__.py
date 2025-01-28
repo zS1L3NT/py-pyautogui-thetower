@@ -1,14 +1,14 @@
 from constants import *
 from regions import Region
-from regions.playing.categories.category import Category
+from regions.playing.categories.category import CategoryRegion
 
-class Categories(Region):
+class CategoriesRegion(Region):
     id = "playing.categories"
     x = 2
     y = GAME_HEIGHT - 54
     width = 584
     height = 54
 
-    attack = Category(0)
-    defence = Category(1)
-    utility = Category(2)
+    attack = CategoryRegion(0)
+    defence = CategoryRegion(1)
+    utility = CategoryRegion(2)

@@ -1,7 +1,7 @@
 from constants import *
 from regions import Region
 
-class BattleButton(Region):
+class BattleButtonRegion(Region):
     id = "home.battle_button"
     x = GAME_CENTER_X - 140
     y = 804

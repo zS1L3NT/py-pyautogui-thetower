@@ -1,4 +1,4 @@
-class Player:
+class PlayerData:
     damage = 0
     health = 0
     max_health = 0

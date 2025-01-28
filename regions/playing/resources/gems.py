@@ -1,7 +1,7 @@
 from constants import *
 from regions import Region
 
-class Gems(Region):
+class GemsRegion(Region):
     id = "playing.resources.gems"
     x = 42
     y = 92

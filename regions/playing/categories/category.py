@@ -1,7 +1,7 @@
 from constants import *
 from regions import Region
 
-class Category(Region):
+class CategoryRegion(Region):
     width = 192
     height = 54
 

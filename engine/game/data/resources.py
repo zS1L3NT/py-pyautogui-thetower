@@ -1,4 +1,4 @@
-class Resources:
+class ResourcesData:
     cash = 0
     coins = 0
     gems = 0

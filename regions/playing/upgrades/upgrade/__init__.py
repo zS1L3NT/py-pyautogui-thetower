@@ -1,21 +1,21 @@
 from constants import *
 from regions import Region
-from regions.playing.upgrades.upgrade.name import Name
-from regions.playing.upgrades.upgrade.value import Value
-from regions.playing.upgrades.upgrade.cost import Cost
+from regions.playing.upgrades.upgrade.name import NameRegion
+from regions.playing.upgrades.upgrade.value import ValueRegion
+from regions.playing.upgrades.upgrade.cost import CostRegion
 
-class Upgrade(Region):
+class UpgradeRegion(Region):
     width = 276
     height = 108
 
-    name: Name
-    value: Value
-    cost: Cost
+    name: NameRegion
+    value: ValueRegion
+    cost: CostRegion
 
     def __init__(self, index):
-        self.name = Name()
-        self.value = Value()
-        self.cost = Cost()
+        self.name = NameRegion()
+        self.value = ValueRegion()
+        self.cost = CostRegion()
 
         if index % 2 == 0:
             self.x = 0

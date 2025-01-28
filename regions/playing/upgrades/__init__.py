@@ -1,22 +1,22 @@
 from constants import *
 from regions import Region
-from regions.playing.upgrades.upgrade import Upgrade
+from regions.playing.upgrades.upgrade import UpgradeRegion
 import pyautogui as ui
 import time
 
-class Upgrades(Region):
+class UpgradesRegion(Region):
     id = "playing.upgrades"
     x = GAME_CENTER_X - 276 - 6
     y = GAME_CENTER_Y + 162
     width = 560
     height = 308
 
-    first_left = Upgrade(0)
-    first_right = Upgrade(1)
-    second_left = Upgrade(2)
-    second_right = Upgrade(3)
-    last_left = Upgrade(4)
-    last_right = Upgrade(5)
+    first_left = UpgradeRegion(0)
+    first_right = UpgradeRegion(1)
+    second_left = UpgradeRegion(2)
+    second_right = UpgradeRegion(3)
+    last_left = UpgradeRegion(4)
+    last_right = UpgradeRegion(5)
 
     def scroll(self, upgrades: int):
         center_x = self.x + self.width / 2

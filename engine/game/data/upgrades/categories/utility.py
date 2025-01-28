@@ -1,20 +1,21 @@
-from engine.game.data.upgrades.categories import Category
-from engine.game.data.upgrades.upgrade import Upgrade
+from engine.game.data.upgrades.categories import CategoryData
+from engine.game.data.upgrades.upgrade import UpgradeData
+from utilities.parser import ValueType
 
-class Utility(Category):
-    category = "utility"
+class UtilityData(CategoryData):
+    id = "utility"
 
-    cash_bonus = Upgrade.multiplier(149)
-    cash_per_wave = Upgrade.number(149)
-    coins_per_kill_bonus = Upgrade.multiplier(149)
-    coins_per_wave = Upgrade.number(149)
-    free_attack_upgrade = Upgrade.percentage(99)
-    free_defence_upgrade = Upgrade.percentage(99)
-    free_utility_upgrade = Upgrade.percentage(99)
-    interest_per_wave = Upgrade.percentage(99)
-    recovery_amount = Upgrade.percentage(300)
-    max_recovery = Upgrade.multiplier(500)
-    package_chance = Upgrade.percentage(60)
+    cash_bonus = UpgradeData(ValueType.MULTIPLIER, 149)
+    cash_per_wave = UpgradeData(ValueType.NUMBER, 149)
+    coins_per_kill_bonus = UpgradeData(ValueType.MULTIPLIER, 149)
+    coins_per_wave = UpgradeData(ValueType.NUMBER, 149)
+    free_attack_upgrade = UpgradeData(ValueType.PERCENTAGE, 99)
+    free_defence_upgrade = UpgradeData(ValueType.PERCENTAGE, 99)
+    free_utility_upgrade = UpgradeData(ValueType.PERCENTAGE, 99)
+    interest_per_wave = UpgradeData(ValueType.PERCENTAGE, 99)
+    recovery_amount = UpgradeData(ValueType.PERCENTAGE, 300)
+    max_recovery = UpgradeData(ValueType.MULTIPLIER, 500)
+    package_chance = UpgradeData(ValueType.PERCENTAGE, 60)
 
     upgrades = [
         cash_bonus,

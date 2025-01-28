@@ -1,22 +1,23 @@
-from engine.game.data.upgrades.categories import Category
-from engine.game.data.upgrades.upgrade import Upgrade
+from engine.game.data.upgrades.categories import CategoryData
+from engine.game.data.upgrades.upgrade import UpgradeData
+from utilities.parser import ValueType
 
-class Attack(Category):
-    category = "attack"
+class AttackData(CategoryData):
+    id = "attack"
 
-    damage = Upgrade.number(6000)
-    attack_speed = Upgrade.number(99)
-    critical_chance = Upgrade.percentage(79)
-    critical_factor = Upgrade.multiplier(150)
-    range = Upgrade.distance(79)
-    damage_per_meter = Upgrade.per_meter(200)
-    multishot_chance = Upgrade.percentage(99)
-    multishot_targets = Upgrade.number(7)
-    rapid_fire_chance = Upgrade.percentage(85)
-    rapid_fire_duration = Upgrade.duration(99)
-    bounce_shot_chance = Upgrade.percentage(85)
-    bounce_shot_targets = Upgrade.number(7)
-    bounce_shot_range = Upgrade.distance(60)
+    damage = UpgradeData(ValueType.NUMBER, 6000)
+    attack_speed = UpgradeData(ValueType.NUMBER, 99)
+    critical_chance = UpgradeData(ValueType.PERCENTAGE, 79)
+    critical_factor = UpgradeData(ValueType.MULTIPLIER, 150)
+    range = UpgradeData(ValueType.DISTANCE, 79)
+    damage_per_meter = UpgradeData(ValueType.PER_METER, 200)
+    multishot_chance = UpgradeData(ValueType.PERCENTAGE, 99)
+    multishot_targets = UpgradeData(ValueType.NUMBER, 7)
+    rapid_fire_chance = UpgradeData(ValueType.PERCENTAGE, 85)
+    rapid_fire_duration = UpgradeData(ValueType.DURATION, 99)
+    bounce_shot_chance = UpgradeData(ValueType.PERCENTAGE, 85)
+    bounce_shot_targets = UpgradeData(ValueType.NUMBER, 7)
+    bounce_shot_range = UpgradeData(ValueType.DISTANCE, 60)
 
     upgrades = [
         damage,

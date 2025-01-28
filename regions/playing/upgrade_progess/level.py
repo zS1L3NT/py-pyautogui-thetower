@@ -1,7 +1,7 @@
 from constants import *
 from regions import Region
 
-class Level(Region):
+class LevelRegion(Region):
     id = "playing.upgrade_progress.level"
     x = 168
     y = 6

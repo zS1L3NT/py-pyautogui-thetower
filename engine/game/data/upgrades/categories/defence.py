@@ -1,24 +1,25 @@
-from engine.game.data.upgrades.categories import Category
-from engine.game.data.upgrades.upgrade import Upgrade
+from engine.game.data.upgrades.categories import CategoryData
+from engine.game.data.upgrades.upgrade import UpgradeData
+from utilities.parser import ValueType
 
-class Defence(Category):
-    category = "defence"
+class DefenceData(CategoryData):
+    id = "defence"
 
-    health = Upgrade.number(6000)
-    health_regen = Upgrade.per_second(6000)
-    defence_percentage = Upgrade.percentage(99)
-    defence_absolute = Upgrade.number(6000)
-    thorn_damage = Upgrade.percentage(99)
-    lifesteal = Upgrade.percentage(80)
-    knockback_chance = Upgrade.percentage(80)
-    knockback_force = Upgrade.number(40)
-    orb_speed = Upgrade.number(38)
-    orbs = Upgrade.number(4)
-    shockwave_size = Upgrade.number(35)
-    shockwave_frequency = Upgrade.duration(40)
-    land_mine_chance = Upgrade.percentage(50)
-    land_mine_damage = Upgrade.number(200)
-    land_mine_radius = Upgrade.number(50)
+    health = UpgradeData(ValueType.NUMBER, 6000)
+    health_regen = UpgradeData(ValueType.PER_SECOND, 6000)
+    defence_percentage = UpgradeData(ValueType.PERCENTAGE, 99)
+    defence_absolute = UpgradeData(ValueType.NUMBER, 6000)
+    thorn_damage = UpgradeData(ValueType.PERCENTAGE, 99)
+    lifesteal = UpgradeData(ValueType.PERCENTAGE, 80)
+    knockback_chance = UpgradeData(ValueType.PERCENTAGE, 80)
+    knockback_force = UpgradeData(ValueType.NUMBER, 40)
+    orb_speed = UpgradeData(ValueType.NUMBER, 38)
+    orbs = UpgradeData(ValueType.NUMBER, 4)
+    shockwave_size = UpgradeData(ValueType.NUMBER, 35)
+    shockwave_frequency = UpgradeData(ValueType.DURATION, 40)
+    land_mine_chance = UpgradeData(ValueType.PERCENTAGE, 50)
+    land_mine_damage = UpgradeData(ValueType.NUMBER, 200)
+    land_mine_radius = UpgradeData(ValueType.NUMBER, 50)
 
     upgrades = [
         health,

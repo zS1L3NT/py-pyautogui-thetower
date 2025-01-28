@@ -1,16 +1,16 @@
 from typing import List
-from engine.game.data.upgrades.upgrade import Upgrade
+from engine.game.data.upgrades.upgrade import UpgradeData
 
-class Category:
-    category = ""
-    upgrades: List["Upgrade"]
+class CategoryData:
+    id = ""
+    upgrades: List["UpgradeData"]
 
     def __init__(self):
         for key in dir(self):
             value = getattr(self, key)
-            if isinstance(value, Upgrade):
+            if isinstance(value, UpgradeData):
                 value.id = key
-                value.category = self.category
+                value.category = self.id
     
     def __str__(self):
         return f"{{\n{"\n".join([f"      {upgrade}" for upgrade in self.upgrades])}\n    }}"

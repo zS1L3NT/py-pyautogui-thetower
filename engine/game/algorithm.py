@@ -1,11 +1,11 @@
 from engine.game.data import GameData
 from regions.game import GameRegion
-from regions.playing import PlayingScreen
+from regions.playing import PlayingRegion
 
 class GameAlgorithm:
     data: GameData
     region: GameRegion
-    screen: PlayingScreen
+    screen: PlayingRegion
 
     def __init__(self, data, region):
         self.data = data

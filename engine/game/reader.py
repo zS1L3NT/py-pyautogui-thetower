@@ -1,14 +1,14 @@
 from engine.game.data import GameData
-from engine.game.data.upgrades.categories import Category
+from engine.game.data.upgrades.categories import CategoryData
 from regions.game import GameRegion
-from regions.playing import PlayingScreen
-from regions.playing.upgrades.upgrade import Upgrade
+from regions.playing import PlayingRegion
+from regions.playing.upgrades.upgrade import UpgradeRegion
 from utilities.parser import ValueType
 
 class GameReader:
     data: GameData
     region: GameRegion
-    screen: PlayingScreen
+    screen: PlayingRegion
 
     def __init__(self, data, region):
         self.data = data
@@ -31,7 +31,7 @@ class GameReader:
         self.data.enemies.damage = self.screen.enemies.damage.read()
         self.data.enemies.health = self.screen.enemies.health.read()
 
-    def read_one_upgrade(self, category: Category, region: Upgrade, index: int, remaining: int):
+    def read_one_upgrade(self, category: CategoryData, region: UpgradeRegion, index: int, remaining: int):
         upgrade = category.upgrades[index]
 
         # upgrade.value = region.value.read()
@@ -98,7 +98,7 @@ class GameReader:
             self.screen.upgrades.scroll(-items - 1)
 
             # Move to next page
-            category = category.category
+            category = category.id
             if category == "attack":
                 self.screen.categories.defence.click()
             elif category == "defence":

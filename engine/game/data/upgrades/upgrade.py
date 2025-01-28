@@ -1,6 +1,6 @@
 from utilities.parser import ValueType
 
-class Upgrade:
+class UpgradeData:
     id = ""
     category = ""
 
@@ -10,7 +10,8 @@ class Upgrade:
     level = float('-inf')
     max_level = float('-inf')
 
-    def __init__(self, max_level: int):
+    def __init__(self, type: ValueType, max_level: int):
+        self.type = type
         self.max_level = max_level
 
     def __setattr__(self, name, value):
@@ -19,38 +20,3 @@ class Upgrade:
 
     def __str__(self):
         return f"{self.id}: {self.value}, ${self.cost} [{self.level} / {self.max_level}]"
-
-    def number(max_level: int):
-        upgrade = Upgrade(max_level)
-        upgrade.type = ValueType.NUMBER
-        return upgrade
-    
-    def percentage(max_level: int):
-        upgrade = Upgrade(max_level)
-        upgrade.type = ValueType.PERCENTAGE
-        return upgrade
-    
-    def multiplier(max_level: int):
-        upgrade = Upgrade(max_level)
-        upgrade.type = ValueType.MULTIPLIER
-        return upgrade
-    
-    def distance(max_level: int):
-        upgrade = Upgrade(max_level)
-        upgrade.type = ValueType.DISTANCE
-        return upgrade
-    
-    def duration(max_level: int):
-        upgrade = Upgrade(max_level)
-        upgrade.type = ValueType.DURATION
-        return upgrade
-
-    def per_meter(max_level: int):
-        upgrade = Upgrade(max_level)
-        upgrade.type = ValueType.PER_METER
-        return upgrade
-    
-    def per_second(max_level: int):
-        upgrade = Upgrade(max_level)
-        upgrade.type = ValueType.PER_SECOND
-        return upgrade

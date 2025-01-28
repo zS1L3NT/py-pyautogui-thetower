@@ -1,7 +1,7 @@
 from constants import *
 from regions import Region
 
-class Name(Region):
+class NameRegion(Region):
     x = 8
     y = 24
     width = 132

@@ -1,4 +1,4 @@
-class Enemies:
+class EnemiesData:
     wave = 0
     damage = 0
     health = 0

@@ -1,7 +1,7 @@
 from constants import *
 from regions import Region
 
-class Cash(Region):
+class CashRegion(Region):
     id = "playing.resources.cash"
     x = 32
     y = 7

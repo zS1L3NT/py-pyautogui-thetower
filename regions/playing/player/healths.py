@@ -1,7 +1,7 @@
 from constants import *
 from regions import Region
 
-class Healths(Region):
+class HealthsRegion(Region):
     id = "playing.player.healths"
     x = 12
     y = 42

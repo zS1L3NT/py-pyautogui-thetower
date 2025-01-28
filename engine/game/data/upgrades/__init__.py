@@ -1,15 +1,15 @@
 from typing import List
-from engine.game.data.upgrades.categories import Category
-from engine.game.data.upgrades.categories.attack import Attack
-from engine.game.data.upgrades.categories.defence import Defence
-from engine.game.data.upgrades.categories.utility import Utility
+from engine.game.data.upgrades.categories import CategoryData
+from engine.game.data.upgrades.categories.attack import AttackData
+from engine.game.data.upgrades.categories.defence import DefenceData
+from engine.game.data.upgrades.categories.utility import UtilityData
 
-class Upgrades:
-    attack = Attack()
-    defence = Defence()
-    utiltiy = Utility()
+class UpgradesData:
+    attack = AttackData()
+    defence = DefenceData()
+    utiltiy = UtilityData()
 
-    categories: List["Category"] = [attack, defence, utiltiy]
+    categories: List["CategoryData"] = [attack, defence, utiltiy]
 
     def __str__(self):
         return f"{{\n    attack: {self.attack}\n    defence: {self.defence}\n    utility: {self.utiltiy}\n  }}"

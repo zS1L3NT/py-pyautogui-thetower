@@ -1,7 +1,7 @@
 from constants import *
 from regions import Region
 
-class Damage(Region):
+class DamageRegion(Region):
     id = "playing.enemies.damage"
     x = 162
     y = 8
