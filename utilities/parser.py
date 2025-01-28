@@ -11,7 +11,7 @@ class ValueType(Enum):
     DURATION = rf"{__NUMERIC}\s?s(?:ec)?"
     PER_METER = rf"{__NUMERIC}\s?\/\s?m"
     PER_SECOND = rf"{__NUMERIC}\s?\/\s?s(?:ec)?"
-    COST = rf"$\s?{__NUMERIC}"
+    COST = rf"\$\s?{__NUMERIC}"
 
     NUMBER_SLASH_NUMBER = rf"{__NUMERIC}\s?\/\s?{__NUMERIC}"
 
@@ -31,7 +31,11 @@ class Parser:
 
     def type(self, type: ValueType):
         match = re.search(type.value, self.value)
-        if match: return Parser.__flatten(match.group(1))
+        if match:
+            if match.lastindex == 2:
+                return Parser.__flatten(match.group(1)), Parser.__flatten(match.group(2))
+            else:
+                return Parser.__flatten(match.group(1))
             
     def number(self):
         return self.type(ValueType.NUMBER)

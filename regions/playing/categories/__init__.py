@@ -1,4 +1,3 @@
-from typing import List
 from constants import *
 from regions import Region
 from regions.playing.categories.category import Category
@@ -13,9 +12,3 @@ class Categories(Region):
     attack = Category(0)
     defence = Category(1)
     utility = Category(2)
-    all: List["Category"] = []
-
-    def __init__(self):
-        super().__init__()
-
-        self.all = [self.attack, self.defence, self.utility]

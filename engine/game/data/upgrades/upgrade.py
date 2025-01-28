@@ -1,4 +1,4 @@
-from utilities.parser import Parser, ValueType
+from utilities.parser import ValueType
 
 class Upgrade:
     id = ""
@@ -14,17 +14,8 @@ class Upgrade:
         self.max_level = max_level
 
     def __setattr__(self, name, value):
-        if name == "cost":
-            value = Parser(value).cost()
-        elif name == "level":
-            value = Parser(value).number()
-        elif name == "value":
-            value = Parser(value).type(self.type)
-
-        if value is None:
-            raise ValueError(f"Failed to parse {name} value: {value}")    
-
-        super().__setattr__(name, value)
+        if value is not None:
+            super().__setattr__(name, value)
 
     def __str__(self):
         return f"{self.id}: {self.value}, ${self.cost} [{self.level} / {self.max_level}]"

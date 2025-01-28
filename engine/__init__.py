@@ -41,11 +41,11 @@ class Engine:
         ui.typewrite("center")
         ui.press("enter")
 
-    def start(self):
+    def run(self):
         if self.screen != EngineScreen.Home:
             print(f"Cannot start engine when game is on {self.screen} screen")
             return
 
         self.region.home.battle_button.click()
 
-        self.game_engine.start()
+        self.game_engine.run()
