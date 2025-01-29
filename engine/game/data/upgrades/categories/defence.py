@@ -4,6 +4,7 @@ from utilities.parser import ValueType
 
 class DefenceData(CategoryData):
     id = "defence"
+    first = "Health"
 
     health = UpgradeData(ValueType.NUMBER, 6000)
     health_regen = UpgradeData(ValueType.PER_SECOND, 6000)

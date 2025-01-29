@@ -7,9 +7,9 @@ from engine.game.data.upgrades.categories.utility import UtilityData
 class UpgradesData:
     attack = AttackData()
     defence = DefenceData()
-    utiltiy = UtilityData()
+    utility = UtilityData()
 
-    categories: List["CategoryData"] = [attack, defence, utiltiy]
+    categories: List["CategoryData"] = [attack, defence, utility]
 
     def __str__(self):
-        return f"{{\n    attack: {self.attack}\n    defence: {self.defence}\n    utility: {self.utiltiy}\n  }}"
+        return f"{{\n    attack: {self.attack}\n    defence: {self.defence}\n    utility: {self.utility}\n  }}"

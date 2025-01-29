@@ -4,6 +4,7 @@ from utilities.parser import ValueType
 
 class UtilityData(CategoryData):
     id = "utility"
+    first = "Cash Bonus"
 
     cash_bonus = UpgradeData(ValueType.MULTIPLIER, 149)
     cash_per_wave = UpgradeData(ValueType.NUMBER, 149)

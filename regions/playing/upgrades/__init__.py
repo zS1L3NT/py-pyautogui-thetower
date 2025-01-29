@@ -27,12 +27,12 @@ class UpgradesRegion(Region):
         time.sleep(0.5)
         ui.mouseUp(center_x, self.y + height)
 
-    def scroll_fix(self):
+    def scroll_last(self, direction: int):
         center_x = self.x + self.width / 2
         height = 108 + 8 + 1
-        reset_height = 40
+        last_height = 40
 
         ui.mouseDown(center_x, self.y + height)
-        ui.dragRel(0, reset_height, 0.25, button = "left", mouseDownUp = False)
+        ui.dragRel(0, -last_height * direction, 0.25, button = "left", mouseDownUp = False)
         time.sleep(0.5)
         ui.mouseUp(center_x, self.y + height)

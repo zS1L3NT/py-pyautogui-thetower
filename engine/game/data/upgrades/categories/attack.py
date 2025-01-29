@@ -4,6 +4,7 @@ from utilities.parser import ValueType
 
 class AttackData(CategoryData):
     id = "attack"
+    first = "Damage"
 
     damage = UpgradeData(ValueType.NUMBER, 6000)
     attack_speed = UpgradeData(ValueType.NUMBER, 99)

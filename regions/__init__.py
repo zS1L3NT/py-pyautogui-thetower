@@ -1,3 +1,4 @@
+from typing import Callable
 from constants import *
 from utilities.parser import Parser, ValueType
 from PIL import Image
@@ -31,15 +32,15 @@ class Region:
 
     def is_present(self, acceptable_difference = 5):
         if self.image:
-            print(f"[RID: {self.id}] Checking if element is visible...")
+            print(f"[RID: {self.id}] >>> Checking if element is visible...")
 
             difference = self.difference(Image.open(self.image))
 
             if difference > acceptable_difference:
-                print(f"[RID: {self.id}] Element is not present, difference is too large: {difference}")
+                print(f"[RID: {self.id}] <<< Element is not present, difference is too large: {difference}")
                 return False
             else:
-                print(f"[RID: {self.id}] Element is present, difference is small enough: {difference}")
+                print(f"[RID: {self.id}] <<< Element is present, difference is small enough: {difference}")
                 return True
         else:
             raise Exception(f"Cannot check {self.id} without image")
@@ -56,6 +57,7 @@ class Region:
         type = ValueType.NUMBER,
         process_image = True,
         retries = 5,
+        is_valid: Callable[[any], bool] = lambda _: True,
         psm = 7,
         characters = None,
     ):
@@ -67,7 +69,7 @@ class Region:
         ])
 
         for i in range(retries):
-            print(f"[RID: {self.id}] Reading with config \"{config}\" ({i + 1}/{retries})")
+            print(f"[RID: {self.id}] >>> Reading with config \"{config}\" ({i + 1}/{retries})")
 
             image = ui.screenshot(region=self.compact()).convert("RGB")
             processed = Image.new("RGB", image.size)
@@ -75,15 +77,21 @@ class Region:
 
             string = str(pytesseract.image_to_string(processed, config=config)).strip()
 
-            print(f"[RID: {self.id}] OCR result: \"{string}\", Parsing as {type.name}")
+            print(f"[RID: {self.id}] OCR result: \"{string}\", parsing and validating as {type.name}")
 
             value = Parser(string).type(type)
             if not value:
-                print(f"[RID: {self.id}] !!! Failed to parse \"{string}\" as {type.name}, retrying...")
+                print(f"[RID: {self.id}] ❔ Failed to parse \"{string}\" as {type.name}, retrying...")
+                continue
+            
+            if not is_valid(value):
+                print(f"[RID: {self.id}] ❔ Value deemed as invalid by caller, retrying...")
                 continue
 
-            print(f"[RID: {self.id}] >>> Parsed OCR result: {value}")
+            print(f"[RID: {self.id}] <<< Parsed and Validated OCR result: {value}")
             return value
+
+        print(f"[RID: {self.id}] ❌ Failed to parse and validate OCR result after {retries} retries!!!")
 
     def cascade(self):
         properties = [getattr(self, key) for key in dir(self)]

@@ -4,6 +4,7 @@ import re
 class ValueType(Enum):
     __NUMERIC = r"(\d+(?:\.\d+)?[KMBT]?)"
 
+    STRING = r"([\w\s]+)"
     NUMBER = __NUMERIC
     PERCENTAGE = rf"{__NUMERIC}\s?%"
     MULTIPLIER = rf"x\s?{__NUMERIC}"
@@ -14,13 +15,6 @@ class ValueType(Enum):
     COST = rf"\$\s?{__NUMERIC}"
 
     NUMBER_SLASH_NUMBER = rf"{__NUMERIC}\s?\/\s?{__NUMERIC}"
-
-    CUSTOM = r""
-
-    def custom(pattern: str = ""):
-        type = ValueType.CUSTOM
-        type._value_ = pattern
-        return type
 
 class Parser:
     value = ""
@@ -41,10 +35,13 @@ class Parser:
         if match:
             if type == ValueType.NUMBER_SLASH_NUMBER:
                 return Parser.__flatten(match.group(1)), Parser.__flatten(match.group(2))
-            elif type == ValueType.CUSTOM:
+            elif type == ValueType.STRING:
                 return match.group(1)
             else:
                 return Parser.__flatten(match.group(1))
+
+    def string(self):
+        return self.type(ValueType.STRING)
             
     def number(self):
         return self.type(ValueType.NUMBER)

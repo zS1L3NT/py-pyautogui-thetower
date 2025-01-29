@@ -29,19 +29,22 @@ class GameEngine:
         # We click on menu because it's a position where it doesn't affect reading of values
         #   or the game itself, it's just a visual thing
         self.region.menu.toggle.click()
+        print("[GAME_ENGINE] Any modals closed")
 
         # The only modal we can't close is the game over modal, so we need to check if it's present
         if self.region.game_over_modal.is_present():
             self.region.game_over_modal.retry_button.click()
+            print("[GAME_ENGINE] Game over modal closed, game restarted")
+
+        # Hide the multiplier select if it's present so we can read the category name
+        if self.region.upgrade_border.multiplier_one.is_present():
+            self.region.upgrade_border.multiplier_one.click()
+            print("[GAME_ENGINE] Multiplier select hidden")
 
         # If the upgrades menu is closed or we are on a different category, open it
-        if self.region.upgrade_border.title.read() != "ATTACK":
+        if self.region.upgrade_border.title.read() != "ATTACK UPGRADES":
             self.region.categories.attack.click()
-
-        # Set the upgrade multiplier to 1x
-        if not self.region.upgrade_border.multiplier_one.is_present():
-            self.region.upgrade_border.multipliers.click()
-        self.region.upgrade_border.multiplier_one.click()
+            print("[GAME_ENGINE] Attack category selected")
 
         self.reader.run()
-        self.algorithm.run()
+        # self.algorithm.run()

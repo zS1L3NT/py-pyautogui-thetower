@@ -9,4 +9,8 @@ class TitleRegion(Region):
     height = 52
 
     def read(self):
-        return super().read(ValueType.custom(r"(ATTACK|DEFENCE|UTILITY) UPGRADES"), retries = 3)
+        return super().read(
+            type = ValueType.STRING,
+            retries = 3,
+            is_valid = lambda value: value in ["ATTACK UPGRADES", "DEFENCE UPGRADES", "UTILITY UPGRADES"]
+        )
