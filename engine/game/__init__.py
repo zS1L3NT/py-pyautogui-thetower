@@ -46,5 +46,30 @@ class GameEngine:
             self.region.categories.attack.click()
             print("[GAME_ENGINE] Attack category selected")
 
+        # Reset all category settings to initial state
+        for category in self.data.upgrades.categories:
+            print(f"[GAME_ENGINE] Setting multiplier to 1x for the {category.id} category")
+            if not self.region.upgrade_border.multiplier_one.is_present():
+                self.region.upgrade_border.multipliers.click()
+            self.region.upgrade_border.multiplier_one.click()
+
+            print(f"[GAME_ENGINE] Scrolling to the top of the {category.id} category")
+            for _ in range(10):
+                self.region.upgrades.first_left.name.id = f"playing.upgrades.{category.id}.first_left.name"
+                if self.region.upgrades.first_left.name.read() != category.first:
+                    self.region.upgrades.scroll(-2)
+                else:
+                    break
+            else:
+                raise Exception(f"Failed to scroll to the top of the {category.id} category")
+
+            category = category.id
+            if category == "attack":
+                self.region.categories.defence.click()
+            elif category == "defence":
+                self.region.categories.utility.click()
+            elif category == "utility":
+                self.region.categories.attack.click()
+
         self.reader.run()
         self.algorithm.run()
