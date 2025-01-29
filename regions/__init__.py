@@ -1,4 +1,3 @@
-from typing import Callable
 from constants import *
 from utilities.parser import Parser, ValueType
 from PIL import Image
@@ -26,15 +25,15 @@ class Region:
 
     def is_present(self, acceptable_difference = 5):
         if self.image:
-            print(f"[RID: {self.id}] >>> Checking if element is visible...")
+            # print(f"[RID: {self.id}] >>> Checking if element is visible...")
 
             difference = self.difference(Image.open(self.image))
 
             if difference > acceptable_difference:
-                print(f"[RID: {self.id}] <<< Element is not present, difference is too large: {difference}")
+                # print(f"[RID: {self.id}] <<< Element is not present, difference is too large: {difference}")
                 return False
             else:
-                print(f"[RID: {self.id}] <<< Element is present, difference is small enough: {difference}")
+                # print(f"[RID: {self.id}] <<< Element is present, difference is small enough: {difference}")
                 return True
         else:
             raise Exception(f"Cannot check {self.id} without image")
@@ -43,22 +42,20 @@ class Region:
         if self.image and not self.is_present():
             raise Exception(f"Element is not present, cannot click!")
 
-        print(f"[RID: {self.id}] Clicking...")
+        # print(f"[RID: {self.id}] Clicking...")
         ui.leftClick(self.x + self.width / 2, self.y + self.height / 2)
 
     def read(
         self,
         type = ValueType.NUMBER,
         simplify_colors = False,
-        retries = 5,
-        is_valid: Callable[[any], bool] = lambda _: True,
     ):
         config = "--psm 7"
         if type.characters() is not None:
             config += f" -c tessedit_char_whitelist=\"{type.characters()}\""
 
-        for i in range(retries):
-            print(f"[RID: {self.id}] >>> Reading with config \"{config}\" ({i + 1}/{retries})")
+        for i in range(5):
+            # print(f"[RID: {self.id}] >>> Reading with config \"{config}\" ({i + 1}/{retries})")
 
             image = ui.screenshot(region = self.compact()).convert("RGB")
             pixels: list[tuple[int, int, int]] = list(image.getdata())
@@ -67,21 +64,17 @@ class Region:
 
             string = str(pytesseract.image_to_string(processed, config = config)).strip()
 
-            print(f"[RID: {self.id}] OCR result: \"{string}\", parsing and validating as {type.name}")
+            # print(f"[RID: {self.id}] OCR result: \"{string}\", parsing as {type.name}")
 
             value = Parser(string).type(type)
             if value is None:
-                print(f"[RID: {self.id}] ❔ Failed to parse \"{string}\" as {type.name}, retrying...")
-                continue
-            
-            if not is_valid(value):
-                print(f"[RID: {self.id}] ❔ Value deemed as invalid by caller, retrying...")
+                # print(f"[RID: {self.id}] ❔ Failed to parse \"{string}\" as {type.name}, retrying...")
                 continue
 
-            print(f"[RID: {self.id}] <<< Parsed and Validated OCR result: {value}")
+            # print(f"[RID: {self.id}] <<< Parsed OCR result: {value}")
             return value
 
-        print(f"[RID: {self.id}] ❌ Failed to parse and validate OCR result after {retries} retries!!!")
+        # print(f"[RID: {self.id}] ❌ Failed to parse OCR result after 5 retries!!!")
 
     def cascade(self):
         properties = [getattr(self, key) for key in dir(self)]

@@ -13,3 +13,52 @@ GAME_X = SCREEN_CENTER_X - 392
 GAME_Y = SCREEN_CENTER_Y - 490
 GAME_CENTER_X = int(GAME_WIDTH / 2)
 GAME_CENTER_Y = int(GAME_HEIGHT / 2)
+
+CATEGORIES = ("Attack", "Defence", "Utility")
+UPGRADES = (
+    (
+        "Damage",
+        "Attack Speed",
+        "Critical Chance",
+        "Critical Factor",
+        "Range",
+        "Damage Per Meter",
+        "Multishot Chance",
+        "Multishot Targets",
+        "Rapid Fire Chance",
+        "Rapid Fire Duration",
+        "Bounce Shot Chance",
+        "Bounce Shot Targets",
+        "Bounce Shot Range",
+    ),
+    (
+        "Health",
+        "Health Regen",
+        "Defence Percentage",
+        "Defence Absolute",
+        "Thorn Damage",
+        "Lifesteal",
+        "Knockback Chance",
+        "Knockback Force",
+        "Orb Speed",
+        "Orbs",
+        "Shockwave Size",
+        "Shockwave Frequency",
+        "Land Mine Chance",
+        "Land Mine Damage",
+        "Land Mine Radius",
+    ),
+    (
+        "Cash Bonus",
+        "Cash Per Wave",
+        "Coins Per Kill Bonus",
+        "Coins Per Wave",
+        "Free Attack Upgrade",
+        "Free Defence Upgrade",
+        "Free Utility Upgrade",
+        "Interest Per Wave",
+        "Recovery Amount",
+        "Max Recovery",
+        "Package Chance",
+    )
+)

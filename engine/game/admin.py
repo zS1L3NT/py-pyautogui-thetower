@@ -1,8 +1,9 @@
 from engine.game.data import GameData
 from regions.playing import PlayingRegion
 import threading
+import time
 
-class GameReader:
+class GameAdmin:
     data: GameData
     region: PlayingRegion
 
@@ -13,10 +14,13 @@ class GameReader:
         self.region = region
 
     def run(self):
-        print("[GAME_READER] Starting reader thread")
+        print("[GAME_ADMIN] Starting admin thread")
         thread = threading.Thread(target = self.thread)
         thread.start()
 
     def thread(self):
         while not self.stop_event.is_set():
-            self.data.wave = self.region.enemies.wave.read()
+            if self.region.game_over_modal.is_present():
+                print("[GAME_ADMIN] Game over modal is present, retrying")
+                self.region.game_over_modal.retry_button.click()
+            time.sleep(5)

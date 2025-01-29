@@ -5,6 +5,7 @@ from regions.playing.upgrades.upgrade.value import ValueRegion
 from regions.playing.upgrades.upgrade.cost import CostRegion
 
 class UpgradeRegion(Region):
+    id = "playing.upgrades.upgrade"
     width = 276
     height = 108
 
@@ -36,6 +37,3 @@ class UpgradeRegion(Region):
                 self.id = f"last_{self.id}"
 
         self.id = f"playing.upgrades.{self.id}"
-
-    def click(self):
-        self.value.click()
