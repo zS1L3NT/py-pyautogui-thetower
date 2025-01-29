@@ -49,16 +49,18 @@ class GameReader:
             # Shockwave frequency is the only upgrade where upgrading it decreases the value
             is_valid = lambda value: (value <= upgrade.value if upgrade.id == "playing.upgrades.defence.shockwave_frequency" else value >= upgrade.value) # type: ignore
 
-            upgrade.value = region.value.read(upgrade.type, is_valid = is_valid)
-            upgrade.cost = region.cost.read(is_valid = lambda cost: cost >= upgrade.cost)
+            while True:
+                upgrade.value = region.value.read(upgrade.type, is_valid = is_valid)
+                upgrade.cost = region.cost.read(is_valid = lambda cost: cost >= upgrade.cost)
 
-            region.name.click()
-            upgrade.level = self.region.upgrade_progress_modal.level.read(is_valid = lambda level: level >= upgrade.level)
-            region.name.click()
+                region.name.click()
+                upgrade.level = self.region.upgrade_progress_modal.level.read(is_valid = lambda level: level >= upgrade.level)
+                region.name.click()
 
-            while upgrade.clicks > 0:
-                region.click()
-                upgrade.clicks -= 1
+                if upgrade.cost < upgrade.target_cost:
+                    region.click()
+                else:
+                    break
 
         index += 1
         remaining -= 1

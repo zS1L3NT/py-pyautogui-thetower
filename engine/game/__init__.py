@@ -47,4 +47,4 @@ class GameEngine:
             print("[GAME_ENGINE] Attack category selected")
 
         self.reader.run()
-        # self.algorithm.run()
+        self.algorithm.run()

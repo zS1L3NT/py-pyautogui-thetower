@@ -10,7 +10,7 @@ class UpgradeData:
     level = float('-inf')
     max_level = float('-inf')
 
-    clicks = 0
+    target_cost = 0
 
     def __init__(self, type: ValueType, max_level: int):
         self.type = type
