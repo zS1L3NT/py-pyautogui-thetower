@@ -5,7 +5,7 @@ class ValueType(Enum):
     STRING = r"([\w\s]+)"
     NUMBER = r"(\d+(?:\.\d+)?[KMBT]?)"
     PERCENTAGE = rf"{NUMBER}\s?%"
-    MULTIPLIER = rf"x\s?{NUMBER}"
+    MULTIPLIER = rf"x?\s?{NUMBER}"
     DISTANCE = rf"{NUMBER}\s?m"
     DURATION = rf"{NUMBER}\s?s(?:ec)?"
     PER_METER = rf"{NUMBER}\s?\/\s?m"
@@ -15,7 +15,7 @@ class ValueType(Enum):
     NUMBER_SLASH_NUMBER = rf"{NUMBER}\s?\/\s?{NUMBER}"
 
     def characters(self):
-        numbers = "0123456789"
+        numbers = ".0123456789"
         multipliers = "KMBT"
 
         match self:
@@ -36,7 +36,7 @@ class ValueType(Enum):
             case ValueType.PER_SECOND:
                 return f"/s{numbers}"
             case ValueType.COST:
-                return f"$.Max{numbers}{multipliers}"
+                return f"$ax{numbers}{multipliers}"
             case ValueType.NUMBER_SLASH_NUMBER:
                 return f"/{numbers}"
 
