@@ -10,4 +10,4 @@ class CostRegion(Region):
     height = 24
 
     def read(self, is_valid: Callable[[any], bool] = lambda _: True):
-        return super().read(type = ValueType.COST, characters = "$1234567890", is_valid = is_valid)
+        return super().read(type = ValueType.COST, is_valid = is_valid)

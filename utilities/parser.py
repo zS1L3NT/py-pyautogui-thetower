@@ -2,19 +2,43 @@ from enum import Enum
 import re
 
 class ValueType(Enum):
-    __NUMERIC = r"(\d+(?:\.\d+)?[KMBT]?)"
-
     STRING = r"([\w\s]+)"
-    NUMBER = __NUMERIC
-    PERCENTAGE = rf"{__NUMERIC}\s?%"
-    MULTIPLIER = rf"x\s?{__NUMERIC}"
-    DISTANCE = rf"{__NUMERIC}\s?m"
-    DURATION = rf"{__NUMERIC}\s?s(?:ec)?"
-    PER_METER = rf"{__NUMERIC}\s?\/\s?m"
-    PER_SECOND = rf"{__NUMERIC}\s?\/\s?s(?:ec)?"
-    COST = rf"\$\s?{__NUMERIC}"
+    NUMBER = r"(\d+(?:\.\d+)?[KMBT]?)"
+    PERCENTAGE = rf"{NUMBER}\s?%"
+    MULTIPLIER = rf"x\s?{NUMBER}"
+    DISTANCE = rf"{NUMBER}\s?m"
+    DURATION = rf"{NUMBER}\s?s(?:ec)?"
+    PER_METER = rf"{NUMBER}\s?\/\s?m"
+    PER_SECOND = rf"{NUMBER}\s?\/\s?s(?:ec)?"
+    COST = rf"\$\s?{NUMBER}|Max"
 
-    NUMBER_SLASH_NUMBER = rf"{__NUMERIC}\s?\/\s?{__NUMERIC}"
+    NUMBER_SLASH_NUMBER = rf"{NUMBER}\s?\/\s?{NUMBER}"
+
+    def characters(self):
+        numbers = "0123456789"
+        multipliers = "KMBT"
+
+        match self:
+            case ValueType.STRING:
+                return None
+            case ValueType.NUMBER:
+                return f"{numbers}{multipliers}"
+            case ValueType.PERCENTAGE:
+                return f"%{numbers}"
+            case ValueType.MULTIPLIER:
+                return f"x{numbers}{multipliers}"
+            case ValueType.DISTANCE:
+                return f"m{numbers}"
+            case ValueType.DURATION:
+                return f"s{numbers}"
+            case ValueType.PER_METER:
+                return f"/m{numbers}"
+            case ValueType.PER_SECOND:
+                return f"/s{numbers}"
+            case ValueType.COST:
+                return f"$.Max{numbers}{multipliers}"
+            case ValueType.NUMBER_SLASH_NUMBER:
+                return f"/{numbers}"
 
 class Parser:
     value = ""
@@ -37,6 +61,8 @@ class Parser:
                 return Parser.__flatten(match.group(1)), Parser.__flatten(match.group(2))
             elif type == ValueType.STRING:
                 return match.group(1)
+            elif type == ValueType.COST:
+                return Parser.__flatten(match.group(1)) if match.group(1) is not None else float('inf')
             else:
                 return Parser.__flatten(match.group(1))
 

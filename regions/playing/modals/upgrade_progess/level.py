@@ -10,4 +10,4 @@ class LevelRegion(Region):
     height = 24
 
     def read(self, is_valid: Callable[[any], bool] = lambda _: True):
-        return super().read(process_image = False, characters = "1234567890", is_valid = is_valid)
+        return super().read(is_valid = is_valid)

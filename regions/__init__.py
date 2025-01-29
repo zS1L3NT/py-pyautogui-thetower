@@ -6,12 +6,6 @@ import pyautogui as ui
 import imagehash
 import pytesseract
 
-def isolate_white(pixel: tuple[int, int, int]):
-    if all(channel >= 225 for channel in pixel):
-        return (255, 255, 255)
-    else:
-        return (0, 0, 0)
-
 class Region:
     id = ""
     x = 0
@@ -55,32 +49,28 @@ class Region:
     def read(
         self,
         type = ValueType.NUMBER,
-        process_image = True,
+        simplify_colors = False,
         retries = 5,
         is_valid: Callable[[any], bool] = lambda _: True,
-        psm = 7,
-        characters = None,
     ):
-        config = " ".join([
-            value for value in [ # type: ignore
-                f"--psm {psm}",
-                f"-c tessedit_char_whitelist=\"{characters}\"" if characters else None
-            ] if value is not None
-        ])
+        config = "--psm 7"
+        if type.characters() is not None:
+            config += f" -c tessedit_char_whitelist=\"{type.characters()}\""
 
         for i in range(retries):
             print(f"[RID: {self.id}] >>> Reading with config \"{config}\" ({i + 1}/{retries})")
 
-            image = ui.screenshot(region=self.compact()).convert("RGB")
+            image = ui.screenshot(region = self.compact()).convert("RGB")
+            pixels: list[tuple[int, int, int]] = list(image.getdata())
             processed = Image.new("RGB", image.size)
-            processed.putdata([isolate_white(pixel) if process_image else pixel for pixel in image.getdata()]) # type: ignore
+            processed.putdata([(255, 255, 255) if all(channel >= 225 for channel in pixel) else (0, 0, 0) if simplify_colors else pixel for pixel in pixels])
 
-            string = str(pytesseract.image_to_string(processed, config=config)).strip()
+            string = str(pytesseract.image_to_string(processed, config = config)).strip()
 
             print(f"[RID: {self.id}] OCR result: \"{string}\", parsing and validating as {type.name}")
 
             value = Parser(string).type(type)
-            if not value:
+            if value is None:
                 print(f"[RID: {self.id}] ❔ Failed to parse \"{string}\" as {type.name}, retrying...")
                 continue
             
