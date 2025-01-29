@@ -1,9 +1,8 @@
-from typing import List
 from engine.game.data.upgrades.upgrade import UpgradeData
 
 class CategoryData:
     id = ""
-    upgrades: List["UpgradeData"]
+    upgrades: tuple["UpgradeData"]
 
     def __init__(self):
         for key in dir(self):

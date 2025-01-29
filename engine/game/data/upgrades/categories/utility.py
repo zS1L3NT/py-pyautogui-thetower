@@ -18,7 +18,7 @@ class UtilityData(CategoryData):
     max_recovery = UpgradeData(ValueType.MULTIPLIER, 500)
     package_chance = UpgradeData(ValueType.PERCENTAGE, 60)
 
-    upgrades = [
+    upgrades = (
         cash_bonus,
         cash_per_wave,
         coins_per_kill_bonus,
@@ -30,4 +30,4 @@ class UtilityData(CategoryData):
         recovery_amount,
         max_recovery,
         package_chance
-    ]
+    )

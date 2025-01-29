@@ -20,7 +20,7 @@ class AttackData(CategoryData):
     bounce_shot_targets = UpgradeData(ValueType.NUMBER, 7)
     bounce_shot_range = UpgradeData(ValueType.DISTANCE, 60)
 
-    upgrades = [
+    upgrades = (
         damage,
         attack_speed,
         critical_chance,
@@ -34,4 +34,4 @@ class AttackData(CategoryData):
         bounce_shot_chance,
         bounce_shot_targets,
         bounce_shot_range
-    ]
+    )

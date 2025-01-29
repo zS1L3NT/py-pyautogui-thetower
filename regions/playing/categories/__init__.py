@@ -13,4 +13,4 @@ class CategoriesRegion(Region):
     defence = CategoryRegion(1)
     utility = CategoryRegion(2)
 
-    all = [attack, defence, utility]
+    all = (attack, defence, utility)

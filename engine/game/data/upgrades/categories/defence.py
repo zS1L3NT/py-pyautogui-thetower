@@ -22,7 +22,7 @@ class DefenceData(CategoryData):
     land_mine_damage = UpgradeData(ValueType.NUMBER, 200)
     land_mine_radius = UpgradeData(ValueType.NUMBER, 50)
 
-    upgrades = [
+    upgrades = (
         health,
         health_regen,
         defence_percentage,
@@ -38,4 +38,4 @@ class DefenceData(CategoryData):
         land_mine_chance,
         land_mine_damage,
         land_mine_radius
-    ]
+    )
