@@ -6,3 +6,4 @@ class MultiplierOneRegion(Region):
     y = 8
     width = 72
     height = 36
+    image = __file__.replace(".py", ".png")

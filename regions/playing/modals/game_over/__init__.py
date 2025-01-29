@@ -12,3 +12,6 @@ class GameOverRegion(Region):
 
     retry_button = RetryButtonRegion()
     home_button = HomeButtonRegion()
+
+    def is_present(self):
+        return self.retry_button.is_present() or self.home_button.is_present()

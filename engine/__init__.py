@@ -17,7 +17,7 @@ class Engine:
         self.region = GameRegion()
         self.region.cascade()
 
-        self.game_engine = GameEngine(self.region)
+        self.game_engine = GameEngine(self.region.playing)
 
         self.switch_to_game()
         self.center_game()

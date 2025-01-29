@@ -15,6 +15,13 @@ class ValueType(Enum):
 
     NUMBER_SLASH_NUMBER = rf"{__NUMERIC}\s?\/\s?{__NUMERIC}"
 
+    CUSTOM = r""
+
+    def custom(pattern: str = ""):
+        type = ValueType.CUSTOM
+        type._value_ = pattern
+        return type
+
 class Parser:
     value = ""
 
@@ -32,8 +39,10 @@ class Parser:
     def type(self, type: ValueType):
         match = re.search(type.value, self.value)
         if match:
-            if match.lastindex == 2:
+            if type == ValueType.NUMBER_SLASH_NUMBER:
                 return Parser.__flatten(match.group(1)), Parser.__flatten(match.group(2))
+            elif type == ValueType.CUSTOM:
+                return match.group(1)
             else:
                 return Parser.__flatten(match.group(1))
             

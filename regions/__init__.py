@@ -4,18 +4,12 @@ from PIL import Image
 import pyautogui as ui
 import imagehash
 import pytesseract
-import time
 
 def isolate_white(pixel: tuple[int, int, int]):
     if all(channel >= 225 for channel in pixel):
         return (255, 255, 255)
     else:
         return (0, 0, 0)
-
-def image_difference(a: Image, b: Image):
-    ahash = imagehash.average_hash(a)
-    bhash = imagehash.average_hash(b)
-    return ahash - bhash
 
 class Region:
     id = ""
@@ -27,21 +21,44 @@ class Region:
 
     cached = None
 
-    def click(self):
+    def difference(self, reference: Image):
+        subject = ui.screenshot(region=self.compact())
+
+        rhash = imagehash.average_hash(reference)
+        shash = imagehash.average_hash(subject)
+
+        return rhash - shash
+
+    def is_present(self, acceptable_difference = 5):
         if self.image:
-            print(f"Checking image of {self.id}...")
+            print(f"[RID: {self.id}] Checking if element is visible...")
 
-            reference = Image.open(self.image)
-            subject = ui.screenshot(region=self.compact())
-            difference = image_difference(reference, subject)
+            difference = self.difference(Image.open(self.image))
 
-            if difference > 5:
-                print(f"You are not clicking {self.id}!! {{ difference: {difference} }}")
-                return
+            if difference > acceptable_difference:
+                print(f"[RID: {self.id}] Element is not present, difference is too large: {difference}")
+                return False
+            else:
+                print(f"[RID: {self.id}] Element is present, difference is small enough: {difference}")
+                return True
+        else:
+            raise Exception(f"Cannot check {self.id} without image")
 
+    def click(self):
+        if self.image and not self.is_present():
+            raise Exception(f"Element is not present, cannot click!")
+
+        print(f"[RID: {self.id}] Clicking...")
         ui.leftClick(self.x + self.width / 2, self.y + self.height / 2)
 
-    def read(self, type = ValueType.NUMBER, process = True, psm = 7, characters = None):
+    def read(
+        self,
+        type = ValueType.NUMBER,
+        process_image = True,
+        retries = 5,
+        psm = 7,
+        characters = None,
+    ):
         config = " ".join([
             value for value in [ # type: ignore
                 f"--psm {psm}",
@@ -49,12 +66,12 @@ class Region:
             ] if value is not None
         ])
 
-        for i in range(5):
-            print(f"[RID: {self.id}] Reading with config \"{config}\" ({i + 1}/5)")
+        for i in range(retries):
+            print(f"[RID: {self.id}] Reading with config \"{config}\" ({i + 1}/{retries})")
 
             image = ui.screenshot(region=self.compact()).convert("RGB")
             processed = Image.new("RGB", image.size)
-            processed.putdata([isolate_white(pixel) if process else pixel for pixel in image.getdata()]) # type: ignore
+            processed.putdata([isolate_white(pixel) if process_image else pixel for pixel in image.getdata()]) # type: ignore
 
             string = str(pytesseract.image_to_string(processed, config=config)).strip()
 
@@ -63,7 +80,6 @@ class Region:
             value = Parser(string).type(type)
             if not value:
                 print(f"[RID: {self.id}] !!! Failed to parse \"{string}\" as {type.name}, retrying...")
-                time.sleep(0.5)
                 continue
 
             print(f"[RID: {self.id}] >>> Parsed OCR result: {value}")
