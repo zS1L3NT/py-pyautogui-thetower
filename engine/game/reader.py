@@ -34,7 +34,11 @@ class GameReader:
     def read_one_upgrade(self, category: CategoryData, region: UpgradeRegion, index: int, remaining: int):
         upgrade = category.upgrades[index]
 
-        # upgrade.value = region.value.read()
+        region.id = f"playing.upgrades.{category.id}.{upgrade.id}"
+        region.value.id = f"{region.id}.value"
+        region.cost.id = f"{region.id}.cost"
+
+        upgrade.value = region.value.read(upgrade.type)
         upgrade.cost = region.cost.read(type = ValueType.COST, characters = "$1234567890")
 
         region.name.click()
@@ -47,6 +51,11 @@ class GameReader:
         return index, remaining
 
     def read_upgrades(self):
+        # In case they're in some modal, close it
+
+        # Check if the upgrade box is visible
+        
+
         for category in self.data.upgrades.categories:
             index = 0
             remaining = len(category.upgrades)
@@ -90,7 +99,7 @@ class GameReader:
                 index, remaining = self.read_one_upgrade(category, region, index, remaining)
 
             # Reset scroll
-            items = len(category.list)
+            items = len(category.upgrades)
             if items % 2 == 1: items += 1
             items -= 6
             items /= 2

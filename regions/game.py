@@ -2,7 +2,6 @@ from constants import *
 from regions import Region
 from regions.home import HomeRegion
 from regions.playing import PlayingRegion
-from regions.game_over import GameOverRegion
 
 class GameRegion(Region):
     id = "game"
@@ -13,4 +12,3 @@ class GameRegion(Region):
 
     home = HomeRegion()
     playing = PlayingRegion()
-    game_over = GameOverRegion()

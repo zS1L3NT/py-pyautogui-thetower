@@ -50,7 +50,7 @@ class Region:
         ])
 
         for i in range(5):
-            print(f"[RID: {self.id}] Reading as {type.name} with config \"{config}\" ({i + 1}/5)")
+            print(f"[RID: {self.id}] Reading with config \"{config}\" ({i + 1}/5)")
 
             image = ui.screenshot(region=self.compact()).convert("RGB")
             processed = Image.new("RGB", image.size)
@@ -58,7 +58,7 @@ class Region:
 
             string = str(pytesseract.image_to_string(processed, config=config)).strip()
 
-            print(f"[RID: {self.id}] OCR result: \"{string}\"")
+            print(f"[RID: {self.id}] OCR result: \"{string}\", Parsing as {type.name}")
 
             value = Parser(string).type(type)
             if not value:

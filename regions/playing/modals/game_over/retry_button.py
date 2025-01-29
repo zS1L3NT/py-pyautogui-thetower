@@ -2,7 +2,7 @@ from constants import *
 from regions import Region
 
 class RetryButtonRegion(Region):
-    id = "game_over.retry_button"
+    id = "playing.modals.game_over.retry_button"
     x = 18
     y = 540
     width = 240
