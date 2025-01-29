@@ -29,6 +29,9 @@ class GameAlgorithm:
     def thread(self):
         while not self.stop_event.is_set():
             for category_index, category in enumerate(self.data.categories):
+                if self.data.wave < 50 and category_index != 2:
+                    continue
+
                 upgrade_index = 0
                 remaining = len(category)
 
@@ -94,9 +97,10 @@ class GameAlgorithm:
                 self.region.upgrades.scroll(-items - 1)
 
                 # Move to next page
-                if category_index == 0:
-                    self.region.categories.defence.click()
-                elif category_index == 1:
-                    self.region.categories.utility.click()
-                elif category_index == 2:
-                    self.region.categories.attack.click()
+                if self.data.wave >= 50:
+                    if category_index == 0:
+                        self.region.categories.defence.click()
+                    elif category_index == 1:
+                        self.region.categories.utility.click()
+                    elif category_index == 2:
+                        self.region.categories.attack.click()

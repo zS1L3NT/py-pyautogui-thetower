@@ -47,6 +47,8 @@ class GameEngine:
         if self.region.upgrade_border.title.read(type = ValueType.STRING) != "ATTACK UPGRADES":
             self.region.categories.attack.click()
 
+        self.reader.run()
+
         # Reset all category settings to initial state
         for category in self.region.categories.all:
             if not self.region.upgrade_border.multiplier_one.is_present():
@@ -66,9 +68,6 @@ class GameEngine:
                 self.region.categories.defence.click()
             elif category.id.endswith("defence"):
                 self.region.categories.utility.click()
-            elif category.id.endswith("utility"):
-                self.region.categories.attack.click()
 
         self.admin.run()
-        self.reader.run()
         self.algorithm.run()
