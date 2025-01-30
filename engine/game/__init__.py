@@ -2,39 +2,41 @@ from constants import *
 from engine.game.algorithm import GameAlgorithm
 from engine.game.data import GameData
 from engine.game.reader import GameReader
-from engine.game.admin import GameAdmin
+from engine.game.adwatcher import GameAdWatcher
+from regions.game import game_region
 from regions.playing import PlayingRegion
 from utilities.parser import ValueType
-
+import time
 
 class GameEngine:
     data: GameData
     region: PlayingRegion
 
-    admin: GameAdmin
     reader: GameReader
     algorithm: GameAlgorithm
+    adwatcher: GameAdWatcher
 
-    def __init__(self, region: PlayingRegion):
+    def __init__(self):
         self.data = GameData()
-        self.region = region
+        self.region = game_region.playing
 
-        self.admin = GameAdmin(self.data, self.region)
         self.reader = GameReader(self.data, self.region)
         self.algorithm = GameAlgorithm(self.data, self.region)
+        self.adwatcher = GameAdWatcher(self.data, self.region, self.pause, self.resume)
 
     def reset(self):
         print("[GAME_ENGINE] Resetting game data")
         self.data = GameData()
 
-    def end(self):
-        if not self.region.playing.menu.end_button.is_present():
-            self.region.playing.menu.toggle.click()
+    def pause(self):
+        self.reader.stop()
+        self.algorithm.stop()
 
-        self.region.playing.menu.end_button.click()
-        self.region.playing.end_game_modal.yes_button.click()
+    def resume(self):
+        self.reader.start()
+        self.algorithm.start()
 
-    def run(self):
+    def start(self):
         # Close any initially opened modals
         # We click on menu because it's a position where it doesn't affect reading of values
         #   or the game itself, it's just a visual thing
@@ -52,7 +54,7 @@ class GameEngine:
         if self.region.upgrade_border.title.read(type = ValueType.STRING) != "ATTACK UPGRADES":
             self.region.categories.attack.click()
 
-        self.reader.run()
+        self.reader.start()
 
         # Reset all category settings to initial state
         for category in self.region.categories.all:
@@ -74,5 +76,12 @@ class GameEngine:
             elif category.id.endswith("defence"):
                 self.region.categories.utility.click()
 
-        self.admin.run(self.reset)
-        self.algorithm.run()
+        self.adwatcher.start()
+        self.algorithm.start()
+
+        while True:
+            if self.region.game_over_modal.is_present():
+                print("[GAME_ADWATCHER] Game over modal is present, retrying")
+                self.region.game_over_modal.retry_button.click()
+                self.reset()
+            time.sleep(5)

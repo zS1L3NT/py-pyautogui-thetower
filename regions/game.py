@@ -16,3 +16,6 @@ class GameRegion(Region):
     playing = PlayingRegion()
     ad = AdRegion()
     ad_claimed = AdClaimedRegion()
+
+game_region = GameRegion()
+game_region.cascade()

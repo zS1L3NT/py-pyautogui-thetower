@@ -1,45 +1,34 @@
 from constants import *
 from engine.game.data import GameData
+from engine.game.process import Process
 from regions.playing import PlayingRegion
 from regions.playing.upgrades.upgrade import UpgradeRegion
 from utilities.parser import ValueType
-import threading
 import time
 
-class GameAlgorithm:
+class GameAlgorithm(Process):
     data: GameData
     region: PlayingRegion
-
-    stop_event = threading.Event()
 
     def __init__(self, data: GameData, region: PlayingRegion):
         self.data = data
         self.region = region
-
-    def run(self):
-        print("[GAME_ALGORITHM] Starting algorithm thread")
-        thread = threading.Thread(target = self.thread)
-        thread.start()
-    
-    def collect_gems(self):
-        for _ in range(5):
-            self.region.tower.gem_point_top.click()
-            time.sleep(0.25)
-            self.region.tower.gem_point_right.click()
-            time.sleep(0.25)
-            self.region.tower.gem_point_bottom.click()
-            time.sleep(0.25)
-            self.region.tower.gem_point_left.click()
-            time.sleep(0.25)
+        super().__init__("GAME_ALGORITHM", "algorithm")
 
     def handle_one(self, region: UpgradeRegion):
         for _ in range(5):
             region.value.click()
         return region.cost.read(type = ValueType.COST) == float('inf')
 
-    def thread(self):
+    def run(self):
         while not self.stop_event.is_set():
-            self.collect_gems()
+            # Collect gems
+            for _ in range(5):
+                for gem_point in self.region.tower.gem_points:
+                    if self.stop_event.is_set(): return
+
+                    gem_point.click()
+                    time.sleep(0.25)
 
             for category_index, category in enumerate(self.data.categories):
                 if self.data.wave < 50 and category_index != 2:
@@ -51,6 +40,8 @@ class GameAlgorithm:
                 upgrade_index = 0
                 remaining = len(category)
 
+                if self.stop_event.is_set(): return
+
                 # Read until near the end
                 while remaining >= 5:
                     regions = [
@@ -61,7 +52,10 @@ class GameAlgorithm:
                     ]
 
                     for region in regions:
+                        if self.stop_event.is_set(): return
+
                         if not category[upgrade_index]:
+
                             category[upgrade_index] = self.handle_one(region)
                             if category[upgrade_index]:
                                 print(f"[GAME_ALGORITHM] ✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
@@ -73,10 +67,14 @@ class GameAlgorithm:
                         break
 
                     if remaining >= 5:
+                        if self.stop_event.is_set(): return
+
                         self.region.upgrades.scroll(2)
 
                 if remaining == -1:
                     continue
+
+                if self.stop_event.is_set(): return
 
                 # Remaining 1 ~ 4
                 if remaining >= 3:
@@ -88,12 +86,16 @@ class GameAlgorithm:
                     ]
 
                     for region in regions:
+                        if self.stop_event.is_set(): return
+
                         if not category[upgrade_index]:
                             category[upgrade_index] = self.handle_one(region)
                             if category[upgrade_index]:
                                 print(f"[GAME_ALGORITHM] ✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
                         upgrade_index += 1
                         remaining -= 1
+
+                if self.stop_event.is_set(): return
                     
                 # Remaining 1 ~ 2
                 self.region.upgrades.scroll_last(1)
@@ -104,12 +106,16 @@ class GameAlgorithm:
                 ]
 
                 for region in regions:
-                        if not category[upgrade_index]:
-                            category[upgrade_index] = self.handle_one(region)
-                            if category[upgrade_index]:
-                                print(f"[GAME_ALGORITHM] ✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
-                        upgrade_index += 1
-                        remaining -= 1
+                    if self.stop_event.is_set(): return
+
+                    if not category[upgrade_index]:
+                        category[upgrade_index] = self.handle_one(region)
+                        if category[upgrade_index]:
+                            print(f"[GAME_ALGORITHM] ✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
+                    upgrade_index += 1
+                    remaining -= 1
+
+                if self.stop_event.is_set(): return
 
                 # Reset scroll
                 items = len(category)

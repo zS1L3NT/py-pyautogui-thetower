@@ -14,3 +14,4 @@ class TowerRegion(Region):
     gem_point_bottom = GemPointRegion(2)
     gem_point_left = GemPointRegion(3)
 
+    gem_points = (gem_point_top, gem_point_right, gem_point_bottom, gem_point_left)

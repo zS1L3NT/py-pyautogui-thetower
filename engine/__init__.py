@@ -1,8 +1,8 @@
 from engine.game import GameEngine
-from regions.game import GameRegion
+from regions.game import game_region
+from utilities.windows import switch_to_game, center_game
 from constants import *
 from enum import Enum
-import pyautogui as ui
 
 class EngineScreen(Enum):
     Home = "home"
@@ -10,42 +10,22 @@ class EngineScreen(Enum):
 
 class Engine:
     screen = EngineScreen.Home
-    region: GameRegion
+    region = game_region
     game_engine: GameEngine
 
     def __init__(self):
-        self.region = GameRegion()
-        self.region.cascade()
+        self.game_engine = GameEngine()
 
-        self.game_engine = GameEngine(self.region.playing)
+        switch_to_game()
+        center_game()
 
-        self.switch_to_game()
-        self.center_game()
-
-    def switch_to_game(self):
-        ui.keyDown("command")
-        ui.press("tab")
-        coords = ui.locate(
-            "app.png",
-            ui.screenshot(region=(0, SCREEN_CENTER_Y - 90, SCREEN_WIDTH, 180)),
-            grayscale=True,
-            confidence=0.8,
-        )
-        ui.leftClick(coords.left + coords.width / 2, SCREEN_CENTER_Y)
-        ui.keyUp("command")
-
-    def center_game(self):
-        ui.keyDown("command")   
-        ui.press("space")
-        ui.keyUp("command")
-        ui.typewrite("center")
-        ui.press("enter")
-
-    def run(self):
+    def start(self):
         if self.screen != EngineScreen.Home:
             print(f"Cannot start engine when game is on {self.screen} screen")
             return
 
         self.region.home.battle_button.click()
 
-        self.game_engine.run()
+        self.game_engine.start()
+
+engine = Engine()
