@@ -2,9 +2,9 @@ from constants import *
 from engine.game.data import GameData
 from regions.playing import PlayingRegion
 from regions.playing.upgrades.upgrade import UpgradeRegion
-import threading
-
 from utilities.parser import ValueType
+import threading
+import time
 
 class GameAlgorithm:
     data: GameData
@@ -45,6 +45,9 @@ class GameAlgorithm:
                 if self.data.wave < 50 and category_index != 2:
                     continue
 
+                if self.data.wave >= 50:
+                    self.region.categories.all[category_index].click()
+
                 upgrade_index = 0
                 remaining = len(category)
 
@@ -65,8 +68,15 @@ class GameAlgorithm:
                         upgrade_index += 1
                         remaining -= 1
 
+                    if self.data.wave < 50:
+                        remaining = -1
+                        break
+
                     if remaining >= 5:
                         self.region.upgrades.scroll(2)
+
+                if remaining == -1:
+                    continue
 
                 # Remaining 1 ~ 4
                 if remaining >= 3:
@@ -108,12 +118,3 @@ class GameAlgorithm:
                 items /= 2
 
                 self.region.upgrades.scroll(-items - 1)
-
-                # Move to next page
-                if self.data.wave >= 50:
-                    if category_index == 0:
-                        self.region.categories.defence.click()
-                    elif category_index == 1:
-                        self.region.categories.utility.click()
-                    elif category_index == 2:
-                        self.region.categories.attack.click()

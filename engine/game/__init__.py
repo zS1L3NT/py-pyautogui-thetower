@@ -8,7 +8,7 @@ from utilities.parser import ValueType
 
 
 class GameEngine:
-    data = GameData()
+    data: GameData
     region: PlayingRegion
 
     admin: GameAdmin
@@ -16,11 +16,16 @@ class GameEngine:
     algorithm: GameAlgorithm
 
     def __init__(self, region: PlayingRegion):
+        self.data = GameData()
         self.region = region
 
         self.admin = GameAdmin(self.data, self.region)
         self.reader = GameReader(self.data, self.region)
         self.algorithm = GameAlgorithm(self.data, self.region)
+
+    def reset(self):
+        print("[GAME_ENGINE] Resetting game data")
+        self.data = GameData()
 
     def end(self):
         if not self.region.playing.menu.end_button.is_present():
@@ -69,5 +74,5 @@ class GameEngine:
             elif category.id.endswith("defence"):
                 self.region.categories.utility.click()
 
-        self.admin.run()
+        self.admin.run(self.reset)
         self.algorithm.run()
