@@ -2,6 +2,8 @@ from constants import *
 from regions import Region
 from regions.home import HomeRegion
 from regions.playing import PlayingRegion
+from regions.ad import AdRegion
+from regions.ad_claimed import AdClaimedRegion
 
 class GameRegion(Region):
     id = "game"
@@ -12,3 +14,5 @@ class GameRegion(Region):
 
     home = HomeRegion()
     playing = PlayingRegion()
+    ad = AdRegion()
+    ad_claimed = AdClaimedRegion()
