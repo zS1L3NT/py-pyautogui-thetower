@@ -2,6 +2,7 @@ from constants import *
 from regions import Region
 from regions.playing.resources import ResourcesRegion
 from regions.playing.menu import MenuRegion
+from regions.playing.tower import TowerRegion
 from regions.playing.player import PlayerRegion
 from regions.playing.enemies import EnemiesRegion
 from regions.playing.upgrade_border import UpgradeBorderRegion
@@ -17,6 +18,7 @@ class PlayingRegion(Region):
 
     resources = ResourcesRegion()
     menu = MenuRegion()
+    tower = TowerRegion()
     player = PlayerRegion()
     enemies = EnemiesRegion()
     upgrade_border = UpgradeBorderRegion()

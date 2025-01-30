@@ -20,7 +20,18 @@ class GameAlgorithm:
         print("[GAME_ALGORITHM] Starting algorithm thread")
         thread = threading.Thread(target = self.thread)
         thread.start()
-            
+    
+    def collect_gems(self):
+        for _ in range(5):
+            self.region.tower.gem_point_top.click()
+            time.sleep(0.25)
+            self.region.tower.gem_point_right.click()
+            time.sleep(0.25)
+            self.region.tower.gem_point_bottom.click()
+            time.sleep(0.25)
+            self.region.tower.gem_point_left.click()
+            time.sleep(0.25)
+
     def handle_one(self, region: UpgradeRegion):
         for _ in range(5):
             region.value.click()
@@ -28,6 +39,8 @@ class GameAlgorithm:
 
     def thread(self):
         while not self.stop_event.is_set():
+            self.collect_gems()
+
             for category_index, category in enumerate(self.data.categories):
                 if self.data.wave < 50 and category_index != 2:
                     continue
