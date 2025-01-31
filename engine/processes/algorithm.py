@@ -2,8 +2,8 @@ from constants import *
 from regions.playing.upgrades import UpgradeRegion
 from utilities.parser import ValueType
 from regions.game import game_region
-from .data import data
-from .process import Process
+from ..data import data
+from ..process import Process
 import time
 
 class Algorithm(Process):

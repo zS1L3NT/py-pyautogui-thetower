@@ -2,10 +2,10 @@ from constants import *
 from regions.game import game_region
 from utilities.parser import ValueType
 from utilities.windows import switch_to_game, center_game
-from .adwatcher import adwatcher
-from .algorithm import algorithm
+from .processes.adwatcher import adwatcher
+from .processes.algorithm import algorithm
+from .processes.reader import reader
 from .data import data
-from .reader import reader
 import time
 
 class Engine:
@@ -59,9 +59,9 @@ class Engine:
 
         while True:
             if playing_region.modals.game_over.is_present():
-                print("[ADWATCHER] Game over modal is present, retrying")
+                print("[ENGINE] Game over modal is present, retrying")
                 playing_region.modals.game_over.retry_button.click()
                 data.reset()
-            time.sleep(5)
+            time.sleep(3)
 
 engine = Engine()

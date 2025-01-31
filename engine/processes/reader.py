@@ -1,6 +1,7 @@
 from regions.game import game_region
-from .data import data
-from .process import Process
+from ..data import data
+from ..process import Process
+import time
 
 class Reader(Process):
     id = "READER"
@@ -9,5 +10,7 @@ class Reader(Process):
         wave = game_region.playing.enemies.wave.read()
         if isinstance(wave, (int, float)):
             data.wave = int(wave)
+
+        time.sleep(1)
 
 reader = Reader()

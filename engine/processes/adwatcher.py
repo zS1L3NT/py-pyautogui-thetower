@@ -3,7 +3,7 @@ from utilities.parser import ValueType
 from utilities.windows import switch_to_game
 from .algorithm import algorithm
 from .reader import reader
-from .process import Process
+from ..process import Process
 import pyautogui as ui
 import time
 
