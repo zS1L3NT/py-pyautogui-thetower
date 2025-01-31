@@ -4,6 +4,8 @@ from PIL import Image
 import pyautogui as ui
 import imagehash
 import pytesseract # type: ignore
+import time
+import os
 
 class Region:
     id = ""
@@ -40,6 +42,19 @@ class Region:
 
     def click(self):
         if self.image and not self.is_present():
+            folder_name = os.path.join("errors", time.strftime("%Y-%m-%d_%H-%M-%S"))
+            os.mkdir(folder_name)
+
+            ui.screenshot().save(os.path.join(folder_name, f"screenshot.png"))
+            ui.screenshot(region = self.compact()).save(os.path.join(folder_name, f"region.png"))
+            with open(os.path.join(folder_name, "log.txt"), "w") as file:
+                file.write("\n".join([
+                    f"x: {self.x}",
+                    f"y: {self.y}",
+                    f"width: {self.width}",
+                    f"height: {self.height}",
+                ]))
+
             raise Exception(f"Element is not present, cannot click!")
 
         # print(f"[RID: {self.id}] Clicking...")
