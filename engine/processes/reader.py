@@ -9,7 +9,10 @@ class Reader(Process):
     def iteration(self):
         wave = game_region.playing.enemies.wave.read()
         if isinstance(wave, (int, float)):
-            data.wave = int(wave)
+            wave = int(wave)
+            if data.wave != wave:
+                self.log(f"Wave changed: {data.wave} + {wave - data.wave} = {wave}")
+                data.wave = int(wave)
 
         time.sleep(1)
 

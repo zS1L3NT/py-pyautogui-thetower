@@ -42,7 +42,7 @@ class Region:
 
     def click(self):
         if self.image and not self.is_present():
-            folder_name = os.path.join("errors", time.strftime("%Y-%m-%d_%H-%M-%S"))
+            folder_name = os.path.join("logs", "errors", time.strftime("%Y-%m-%d %H-%M-%S"))
             os.mkdir(folder_name)
 
             ui.screenshot().save(os.path.join(folder_name, f"screenshot.png"))

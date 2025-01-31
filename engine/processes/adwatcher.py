@@ -14,17 +14,21 @@ class AdWatcher(Process):
         reader.stop()
         algorithm.stop()
 
+        time.sleep(1)
+
     def resume(self):
+        time.sleep(1)
+
         reader.start()
         algorithm.start()
 
     def close_ad(self):
         # Left ads seem to not have a second screen
         if game_region.ad.left_close_button.read(type = ValueType.STRING) in ["x", "X"]:
-            print("[ADWATCHER] Left ad closing mechanism")
+            self.log("Left ad closing mechanism")
             game_region.ad.left_close_button.click()
         else:
-            print("[ADWATCHER] Right ad closing mechanism")
+            self.log("Right ad closing mechanism")
             game_region.ad.right_close_button.click()
 
             ui.press("enter")
@@ -44,7 +48,7 @@ class AdWatcher(Process):
         playing_region = game_region.playing
 
         if playing_region.ad_gems.is_present():
-            print("[ADWATCHER] Watching ad for gems")
+            self.log("Watching ad for gems")
             self.pause()
 
             playing_region.ad_gems.click()
@@ -59,7 +63,7 @@ class AdWatcher(Process):
             self.resume()
 
         if playing_region.ad_coin_bonus.status.read(type = ValueType.STRING) == "Inactive":
-            print("[ADWATCHER] Watching ad for coin bonus")
+            self.log("Watching ad for coin bonus")
             self.pause()
 
             # Open the coin bonus modal
@@ -71,6 +75,8 @@ class AdWatcher(Process):
                 time.sleep(75)
 
                 self.close_ad()
+
+                time.sleep(1)
 
             # Close the coin bonus modal
             playing_region.menu.toggle.click()
