@@ -6,4 +6,3 @@ class LeftCloseButtonRegion(Region):
     y = 13
     width = 30
     height = 30
-    image = __file__.replace(".py", ".png")
