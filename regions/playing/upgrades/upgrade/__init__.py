@@ -1,8 +1,8 @@
 from constants import *
-from regions import Region
-from regions.playing.upgrades.upgrade.name import NameRegion
-from regions.playing.upgrades.upgrade.value import ValueRegion
-from regions.playing.upgrades.upgrade.cost import CostRegion
+from region import Region
+from .name import NameRegion
+from .value import ValueRegion
+from .cost import CostRegion
 
 class UpgradeRegion(Region):
     id = "playing.upgrades.upgrade"

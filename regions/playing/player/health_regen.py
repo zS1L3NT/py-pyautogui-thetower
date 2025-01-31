@@ -1,5 +1,5 @@
 from constants import *
-from regions import Region
+from region import Region
 from utilities.parser import ValueType
 
 class HealthRegenRegion(Region):

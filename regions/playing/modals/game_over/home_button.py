@@ -1,5 +1,5 @@
 from constants import *
-from regions import Region
+from region import Region
 
 class HomeButtonRegion(Region):
     id = "playing.modals.game_over.home_button"

@@ -1,6 +1,7 @@
-from regions import Region
-from regions.playing.menu.button import ButtonRegion
-from regions.playing.menu.end_button import EndButtonRegion
+from region import Region
+from .button import ButtonRegion
+from .end_button import EndButtonRegion
+
 class MenuRegion(Region):
     id = "playing.menu"
     x = 658

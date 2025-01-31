@@ -1,8 +1,8 @@
 from constants import *
-from regions import Region
-from regions.playing.enemies.wave import WaveRegion
-from regions.playing.enemies.damage import DamageRegion
-from regions.playing.enemies.health import HealthRegion
+from region import Region
+from .wave import WaveRegion
+from .damage import DamageRegion
+from .health import HealthRegion
 
 class EnemiesRegion(Region):
     id = "playing.enemies"

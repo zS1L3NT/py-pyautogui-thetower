@@ -1,6 +1,6 @@
 from constants import *
-from regions import Region
-from regions.playing.categories.category import CategoryRegion
+from region import Region
+from .category import CategoryRegion
 
 class CategoriesRegion(Region):
     id = "playing.categories"

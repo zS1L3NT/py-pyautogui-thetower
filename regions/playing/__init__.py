@@ -1,19 +1,16 @@
 from constants import *
-from regions import Region
-from regions.playing.resources import ResourcesRegion
-from regions.playing.ad_coin_bonus import AdCoinBonusRegion
-from regions.playing.menu import MenuRegion
-from regions.playing.ad_gems import AdGemsRegion
-from regions.playing.tower import TowerRegion
-from regions.playing.player import PlayerRegion
-from regions.playing.enemies import EnemiesRegion
-from regions.playing.upgrade_border import UpgradeBorderRegion
-from regions.playing.upgrades import UpgradesRegion
-from regions.playing.categories import CategoriesRegion
-from regions.playing.modals.game_over import GameOverRegion
-from regions.playing.modals.upgrade_progess import UpgradeProgressRegion
-from regions.playing.modals.end_game import EndGameRegion
-from regions.playing.modals.coin_bonus import CoinBonusRegion
+from region import Region
+from .resources import ResourcesRegion
+from .ad_coin_bonus import AdCoinBonusRegion
+from .menu import MenuRegion
+from .ad_gems import AdGemsRegion
+from .tower import TowerRegion
+from .player import PlayerRegion
+from .enemies import EnemiesRegion
+from .upgrade_border import UpgradeBorderRegion
+from .upgrades import UpgradesRegion
+from .categories import CategoriesRegion
+from .modals import ModalsRegion
 
 class PlayingRegion(Region):
     width = GAME_WIDTH
@@ -30,7 +27,4 @@ class PlayingRegion(Region):
     upgrades = UpgradesRegion()
     categories = CategoriesRegion()
 
-    game_over_modal = GameOverRegion()
-    upgrade_progress_modal = UpgradeProgressRegion()
-    end_game_modal = EndGameRegion()
-    coin_bonus_modal = CoinBonusRegion()
+    modals = ModalsRegion()

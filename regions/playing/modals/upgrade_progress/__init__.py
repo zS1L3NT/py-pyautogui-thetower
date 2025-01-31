@@ -1,6 +1,6 @@
 from constants import *
-from regions import Region
-from regions.playing.modals.upgrade_progess.level import LevelRegion
+from region import Region
+from .level import LevelRegion
 
 class UpgradeProgressRegion(Region):
     id = "playing.upgrade_progress"

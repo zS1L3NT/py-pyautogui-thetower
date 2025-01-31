@@ -1,6 +1,6 @@
-from regions import Region
-from regions.playing.modals.end_game.no_button import NoButtonRegion
-from regions.playing.modals.end_game.yes_button import YesButtonRegion
+from region import Region
+from .no_button import NoButtonRegion
+from .yes_button import YesButtonRegion
 
 class EndGameRegion(Region):
     id = "playing.modals.end_game"

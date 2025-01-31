@@ -1,4 +1,4 @@
-from regions import Region
+from region import Region
 
 class EndButtonRegion(Region):
     id = "playing.menu.end_button"

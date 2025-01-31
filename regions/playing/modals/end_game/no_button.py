@@ -1,4 +1,4 @@
-from regions import Region
+from region import Region
 
 class NoButtonRegion(Region):
     id = "playing.modals.end_game.no_button"

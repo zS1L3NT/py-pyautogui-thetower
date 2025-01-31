@@ -1,4 +1,4 @@
-from regions import Region
+from region import Region
 
 class ClaimButtonRegion(Region):
     x = 240

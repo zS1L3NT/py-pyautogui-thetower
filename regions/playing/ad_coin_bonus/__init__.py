@@ -1,5 +1,5 @@
-from regions import Region
-from regions.playing.ad_coin_bonus.status import StatusRegion
+from region import Region
+from .status import StatusRegion
 
 class AdCoinBonusRegion(Region):
     x = 472

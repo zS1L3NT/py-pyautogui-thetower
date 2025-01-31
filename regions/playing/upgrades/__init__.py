@@ -1,6 +1,6 @@
 from constants import *
-from regions import Region
-from regions.playing.upgrades.upgrade import UpgradeRegion
+from region import Region
+from .upgrade import UpgradeRegion
 import pyautogui as ui
 import time
 

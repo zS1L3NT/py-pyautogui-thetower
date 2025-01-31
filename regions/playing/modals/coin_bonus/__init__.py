@@ -1,5 +1,5 @@
-from regions import Region
-from regions.playing.modals.coin_bonus.watch_button import WatchButtonRegion
+from region import Region
+from .watch_button import WatchButtonRegion
 
 class CoinBonusRegion(Region):
     x = 164

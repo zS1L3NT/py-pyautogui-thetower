@@ -1,8 +1,8 @@
 from constants import *
-from regions import Region
-from regions.playing.player.damage import DamageRegion
-from regions.playing.player.health_regen import HealthRegenRegion
-from regions.playing.player.healths import HealthsRegion
+from region import Region
+from .damage import DamageRegion
+from .health_regen import HealthRegenRegion
+from .healths import HealthsRegion
 
 class PlayerRegion(Region):
     id = "playing.player"

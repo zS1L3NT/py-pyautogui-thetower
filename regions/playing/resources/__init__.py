@@ -1,8 +1,8 @@
 from constants import *
-from regions import Region
-from regions.playing.resources.cash import CashRegion
-from regions.playing.resources.coins import CoinsRegion
-from regions.playing.resources.gems import GemsRegion
+from region import Region
+from .cash import CashRegion
+from .coins import CoinsRegion
+from .gems import GemsRegion
 
 class ResourcesRegion(Region):
     id = "playing.resources"

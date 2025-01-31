@@ -1,6 +1,6 @@
 from constants import *
-from regions import Region
-from regions.ad_claimed.claim_button import ClaimButtonRegion
+from region import Region
+from .claim_button import ClaimButtonRegion
 
 class AdClaimedRegion(Region):
     width = GAME_WIDTH

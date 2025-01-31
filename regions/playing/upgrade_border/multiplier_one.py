@@ -1,4 +1,4 @@
-from regions import Region
+from region import Region
 
 class MultiplierOneRegion(Region):
     id = "playing.upgrade_border.multiplier_one"

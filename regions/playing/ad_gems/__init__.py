@@ -1,5 +1,5 @@
 from constants import *
-from regions import Region
+from region import Region
 
 class AdGemsRegion(Region):
     x = 108

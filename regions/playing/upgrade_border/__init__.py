@@ -1,8 +1,8 @@
 from constants import *
-from regions import Region
-from regions.playing.upgrade_border.multiplier_one import MultiplierOneRegion
-from regions.playing.upgrade_border.multipliers import MultipliersRegion
-from regions.playing.upgrade_border.title import TitleRegion
+from region import Region
+from .multiplier_one import MultiplierOneRegion
+from .multipliers import MultipliersRegion
+from .title import TitleRegion
 
 class UpgradeBorderRegion(Region):
     id = "playing.upgrade_border"

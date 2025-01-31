@@ -1,4 +1,4 @@
-from regions import Region
+from region import Region
 
 class TitleRegion(Region):
     id = "playing.upgrade_border.title"

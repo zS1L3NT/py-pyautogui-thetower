@@ -1,4 +1,4 @@
-from regions import Region
+from region import Region
 
 class LeftCloseButtonRegion(Region):
     id = "ad.left_close_button"

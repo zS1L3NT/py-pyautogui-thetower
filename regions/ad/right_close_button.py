@@ -1,4 +1,4 @@
-from regions import Region
+from region import Region
 
 class RightCloseButtonRegion(Region):
     id = "ad.right_close_button"

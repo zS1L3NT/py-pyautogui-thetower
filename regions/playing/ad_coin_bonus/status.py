@@ -1,4 +1,4 @@
-from regions import Region
+from region import Region
 
 class StatusRegion(Region):
     x = 4

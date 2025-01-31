@@ -1,5 +1,4 @@
-from regions import Region
-
+from region import Region
 
 class GemPointRegion(Region):
     id = "playing.tower.gem_point"

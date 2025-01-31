@@ -1,4 +1,4 @@
-from regions import Region
+from region import Region
 
 class ButtonRegion(Region):
     id = "playing.menu.toggle"

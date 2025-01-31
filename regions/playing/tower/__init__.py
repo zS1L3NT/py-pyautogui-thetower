@@ -1,6 +1,6 @@
 from constants import *
-from regions import Region
-from regions.playing.tower.gem_point import GemPointRegion
+from region import Region
+from .gem_point import GemPointRegion
 
 class TowerRegion(Region):
     id = "playing.tower"

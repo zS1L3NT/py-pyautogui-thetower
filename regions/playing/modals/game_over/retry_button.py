@@ -1,5 +1,5 @@
 from constants import *
-from regions import Region
+from region import Region
 
 class RetryButtonRegion(Region):
     id = "playing.modals.game_over.retry_button"
