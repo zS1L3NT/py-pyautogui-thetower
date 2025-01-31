@@ -43,10 +43,10 @@ class ValueType(Enum):
 class Parser:
     value = ""
 
-    def __init__(self, value):
+    def __init__(self, value: str):
         self.value = str(value).strip()
     
-    def __flatten(value):
+    def __flatten(self, value: str) -> float:
         if value[-1].isnumeric():
             return float(value)
         
@@ -54,17 +54,17 @@ class Parser:
 
         return float(value[:-1]) * multipliers[value[-1]]
 
-    def type(self, type: ValueType):
+    def type(self, type: ValueType) -> tuple[float, float] | str | float | None:
         match = re.search(type.value, self.value)
         if match:
             if type == ValueType.NUMBER_SLASH_NUMBER:
-                return Parser.__flatten(match.group(1)), Parser.__flatten(match.group(2))
+                return self.__flatten(match.group(1)), self.__flatten(match.group(2))
             elif type == ValueType.STRING:
                 return match.group(1)
             elif type == ValueType.COST:
-                return Parser.__flatten(match.group(1)) if match.group(1) is not None else float('inf')
+                return self.__flatten(match.group(1)) if match.group(1) is not None else float('inf')
             else:
-                return Parser.__flatten(match.group(1))
+                return self.__flatten(match.group(1))
 
     def string(self):
         return self.type(ValueType.STRING)
@@ -93,7 +93,7 @@ class Parser:
     def cost(self):
         return self.type(ValueType.COST)
 
-    def number_slash_number(self):
+    def number_slash_number(self) -> tuple[float, float] | None:
         match = re.search(ValueType.NUMBER_SLASH_NUMBER.value, self.value)
         if match:
-            return (Parser.__flatten(match.group(1)), Parser.__flatten(match.group(2)))
+            return (self.__flatten(match.group(1)), self.__flatten(match.group(2)))

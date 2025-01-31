@@ -10,6 +10,9 @@ def switch_to_game():
         grayscale=True,
         confidence=0.8,
     )
+    if not coords:
+        raise Exception("Cannot find game window")
+
     ui.leftClick(coords.left + coords.width / 2, SCREEN_CENTER_Y)
     ui.keyUp("command")
 

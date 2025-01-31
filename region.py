@@ -3,7 +3,7 @@ from utilities.parser import Parser, ValueType
 from PIL import Image
 import pyautogui as ui
 import imagehash
-import pytesseract
+import pytesseract # type: ignore
 
 class Region:
     id = ""
@@ -15,15 +15,15 @@ class Region:
 
     cached = None
 
-    def difference(self, reference: Image):
-        subject = ui.screenshot(region=self.compact())
+    def difference(self, reference: Image.Image) -> int:
+        subject = ui.screenshot(region = self.compact())
 
-        rhash = imagehash.average_hash(reference)
-        shash = imagehash.average_hash(subject)
+        rhash = imagehash.average_hash(reference) # type: ignore
+        shash = imagehash.average_hash(subject) # type: ignore
 
         return rhash - shash
 
-    def is_present(self, acceptable_difference = 5):
+    def is_present(self, acceptable_difference: int = 5):
         if self.image:
             # print(f"[RID: {self.id}] >>> Checking if element is visible...")
 
@@ -47,22 +47,25 @@ class Region:
 
     def read(
         self,
-        type = ValueType.NUMBER,
-        simplify_colors = False,
+        type: ValueType = ValueType.NUMBER,
+        simplify_colors: bool = False,
     ):
         config = "--psm 7"
         if type.characters() is not None:
             config += f" -c tessedit_char_whitelist=\"{type.characters()}\""
 
-        for i in range(5):
+        for _ in range(5):
             # print(f"[RID: {self.id}] >>> Reading with config \"{config}\" ({i + 1}/{retries})")
 
             image = ui.screenshot(region = self.compact()).convert("RGB")
-            pixels: list[tuple[int, int, int]] = list(image.getdata())
+            pixels: list[tuple[int, int, int]] = list(image.getdata()) # type: ignore
             processed = Image.new("RGB", image.size)
-            processed.putdata([(255, 255, 255) if all(channel >= 225 for channel in pixel) else (0, 0, 0) if simplify_colors else pixel for pixel in pixels])
+            processed.putdata([ # type: ignore
+                (255, 255, 255) if all(channel >= 225 for channel in pixel) else (0, 0, 0) \
+                if simplify_colors else pixel for pixel in pixels
+            ])
 
-            string = str(pytesseract.image_to_string(processed, config = config)).strip()
+            string = str(pytesseract.image_to_string(processed, config = config)).strip() # type: ignore
 
             # print(f"[RID: {self.id}] OCR result: \"{string}\", parsing as {type.name}")
 
@@ -87,8 +90,8 @@ class Region:
         for region in regions:
             region.cascade()
     
-    def preview(self, name = "preview"):
-        ui.screenshot(region=self.compact()).save(f"{name}.png")
+    def preview(self, name: str = "preview"):
+        ui.screenshot(region = self.compact()).save(f"{name}.png")
 
     def compact(self):
         return (self.x, self.y, self.width, self.height)

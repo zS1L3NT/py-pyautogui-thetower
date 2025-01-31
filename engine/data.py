@@ -1,4 +1,4 @@
-class GameData:
+class Data:
     wave: int
     attack: list[bool]
     defence: list[bool]
@@ -7,6 +7,9 @@ class GameData:
     categories: tuple[list[bool], list[bool], list[bool]]
 
     def __init__(self):
+        self.reset()
+
+    def reset(self):
         self.wave = 0
 
         self.attack = [False] * 13
@@ -20,3 +23,5 @@ class GameData:
         self.utility[7] = True
 
         self.categories = (self.attack, self.defence, self.utility)
+
+data = Data()

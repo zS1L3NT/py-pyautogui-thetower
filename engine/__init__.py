@@ -1,31 +1,67 @@
-from engine.game import GameEngine
-from regions.game import game_region
-from utilities.windows import switch_to_game, center_game
 from constants import *
-from enum import Enum
-
-class EngineScreen(Enum):
-    Home = "home"
-    Playing = "playing"
+from regions.game import game_region
+from utilities.parser import ValueType
+from utilities.windows import switch_to_game, center_game
+from .adwatcher import adwatcher
+from .algorithm import algorithm
+from .data import data
+from .reader import reader
+import time
 
 class Engine:
-    screen = EngineScreen.Home
-    region = game_region
-    game_engine: GameEngine
-
-    def __init__(self):
-        self.game_engine = GameEngine()
+    def start(self):
+        playing_region = game_region.playing
 
         switch_to_game()
         center_game()
 
-    def start(self):
-        if self.screen != EngineScreen.Home:
-            print(f"Cannot start engine when game is on {self.screen} screen")
-            return
+        # Close any initially opened modals
+        # We click on menu because it's a position where it doesn't affect reading of values
+        #   or the game itself, it's just a visual thing
+        playing_region.menu.toggle.click()
 
-        self.region.home.battle_button.click()
+        # The only modal we can't close is the game over modal, so we need to check if it's present
+        if playing_region.modals.game_over.is_present():
+            playing_region.modals.game_over.retry_button.click()
 
-        self.game_engine.start()
+        # Hide the multiplier select if it's present so we can read the category name
+        if playing_region.upgrade_border.multiplier_one.is_present():
+            playing_region.upgrade_border.multiplier_one.click()
+
+        # If the upgrades menu is closed or we are on a different category, open it
+        if playing_region.upgrade_border.title.read(type = ValueType.STRING) != "ATTACK UPGRADES":
+            playing_region.categories.attack.click()
+
+        reader.start()
+
+        # Reset all category settings to initial state
+        for category in playing_region.categories.all:
+            if not playing_region.upgrade_border.multiplier_one.is_present():
+                playing_region.upgrade_border.multipliers.click()
+            playing_region.upgrade_border.multiplier_one.click()
+
+            for _ in range(10):
+                playing_region.upgrades.first_left.name.id = f"playing.upgrades.{category.id}.first_left.name"
+                if playing_region.upgrades.first_left.name.read(type = ValueType.STRING) != category.first:
+                    playing_region.upgrades.scroll(-2)
+                else:
+                    break
+            else:
+                raise Exception(f"Failed to scroll to the top of the {category.id} category")
+
+            if category.id.endswith("attack"):
+                playing_region.categories.defence.click()
+            elif category.id.endswith("defence"):
+                playing_region.categories.utility.click()
+
+        adwatcher.start()
+        algorithm.start()
+
+        while True:
+            if playing_region.modals.game_over.is_present():
+                print("[ADWATCHER] Game over modal is present, retrying")
+                playing_region.modals.game_over.retry_button.click()
+                data.reset()
+            time.sleep(5)
 
 engine = Engine()
