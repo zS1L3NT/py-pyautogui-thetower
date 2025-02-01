@@ -1,4 +1,5 @@
 from regions.game import region
+from typing import Callable
 from utilities.parser import Parser, ValueType
 from utilities.windows import switch_to_game
 from .algorithm import algorithm
@@ -40,7 +41,9 @@ class AdWatcher(Process):
 
     def close_ad(self):
         # Left ads seem to not have a second screen
-        if region.ad.left_close_button.read(type = ValueType.STRING) in ["x", "X"]:
+        is_valid: Callable[[object], bool] = lambda value: isinstance(value, str) and "x" in value.lower() and "reward" in value.lower() and "granted" in value.lower()
+
+        if region.ad.left_close_area.read(type = ValueType.STRING, is_valid = is_valid) is not None:
             logging.info("⬅️ Left ad closing mechanism")
             region.ad.left_close_button.click()
         else:

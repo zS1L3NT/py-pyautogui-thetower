@@ -1,5 +1,6 @@
 from constants import *
 from telegram.api import TelegramAPI
+from typing import Callable
 from utilities.parser import Parser, ValueType
 from PIL import Image
 import pyautogui as ui
@@ -61,6 +62,7 @@ class Region:
     def read(
         self,
         type: ValueType = ValueType.NUMBER,
+        is_valid: Callable[[tuple[float, float] | str | float | None], bool] = lambda _: True,
         simplify_colors: bool = False,
     ):
         config = "--psm 7"
@@ -80,6 +82,9 @@ class Region:
 
             value = Parser(string).type(type)
             if value is None:
+                continue
+
+            if not is_valid(value):
                 continue
 
             return value

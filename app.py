@@ -22,6 +22,4 @@ logging.basicConfig(
     format="%(asctime)s - %(threadName)s - %(message)s"
 )
 
-logging.info(f"Starting engine @ {timestamp}")
-
-engine.start()
+engine.start(timestamp)
