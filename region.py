@@ -4,6 +4,7 @@ from PIL import Image
 import pyautogui as ui
 import imagehash
 import pytesseract # type: ignore
+import logging
 import time
 import os
 
@@ -47,7 +48,10 @@ class Region:
                     f"height: {self.height}",
                 ]))
 
-            raise Exception(f"Element is not present, cannot click!")
+            try:
+                raise Exception(f"Element is not present, cannot click!")
+            except:
+                logging.error(f"❗ Element {self.id} is not present, cannot click!", exc_info = True)
 
         ui.leftClick(self.x + self.width / 2, self.y + self.height / 2)
 

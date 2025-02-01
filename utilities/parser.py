@@ -67,7 +67,6 @@ class Parser:
             elif type == ValueType.COST:
                 return self.__flatten(match.group(1)) if match.group(1) is not None else float('inf')
             elif type == ValueType.TIME:
-                print(match.group(1))
                 if match.group(1) == "Inactive":
                     return 0
                 elif match.group(2) is not None:
