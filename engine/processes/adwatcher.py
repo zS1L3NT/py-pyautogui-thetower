@@ -1,11 +1,10 @@
+from recorder import Recorder
 from regions.game import region
 from typing import Callable
 from utilities.parser import Parser, ValueType
 from utilities.windows import switch_to_game
 from .algorithm import algorithm
 from .reader import reader
-from .retry import retry
-from .recorder import recorder
 from ..process import Process
 import pyautogui as ui
 import logging
@@ -18,7 +17,6 @@ class AdWatcher(Process):
     def pause_processes(self):
         reader.stop()
         algorithm.stop()
-        retry.stop()
 
         time.sleep(1)
 
@@ -27,7 +25,6 @@ class AdWatcher(Process):
 
         reader.start()
         algorithm.start()
-        retry.start()
 
     def not_on_cooldown(self):
         if self.failed_at is None:
@@ -65,52 +62,11 @@ class AdWatcher(Process):
 
     def iteration(self):
         if region.playing.ad_gems.is_present() and self.not_on_cooldown():
-            recorder.start()
+            with Recorder():
+                logging.info("📺 Watching ad for gems")
+                self.pause_processes()
 
-            logging.info("📺 Watching ad for gems")
-            self.pause_processes()
-
-            region.playing.ad_gems.click()
-
-            # wait for the ad to load / fail
-            time.sleep(5)
-
-            if region.playing.modals.ad_failed.ok_button.is_present():
-                logging.warning("⚠️ Could not load ad, will wait 5 minutes before trying again")
-                self.failed_at = time.time()
-
-                region.playing.modals.ad_failed.ok_button.click()
-            else:
-                # wait for the ad to finish
-                time.sleep(65)
-
-                self.close_ad()
-
-                # Claim the gems
-                if region.ad_claimed.claim_button.is_present():
-                    region.ad_claimed.claim_button.click()
-                else:
-                    logging.warning("❗ Claim gem modal did not show up?!")
-
-            self.resume_processes()
-
-            recorder.stop()
-
-        duration = Parser(str(region.playing.ad_coin_bonus.status.read(type = ValueType.STRING))).time()
-        if isinstance(duration, int) and duration < 30 * 60 and self.not_on_cooldown():
-            recorder.start()
-
-            logging.info("📺 Watching ad for coin bonus")
-            self.pause_processes()
-
-            # Open the coin bonus modal
-            region.playing.ad_coin_bonus.click()
-
-            # wait for the modal to open fully?
-            time.sleep(0.5)
-
-            for _ in range(5):
-                region.playing.modals.coin_bonus.watch_button.click()
+                region.playing.ad_gems.click()
 
                 # wait for the ad to load / fail
                 time.sleep(5)
@@ -120,21 +76,56 @@ class AdWatcher(Process):
                     self.failed_at = time.time()
 
                     region.playing.modals.ad_failed.ok_button.click()
-                    break
                 else:
                     # wait for the ad to finish
                     time.sleep(65)
 
                     self.close_ad()
 
-                # wait for the ad to close properly
-                time.sleep(1)
+                    # Claim the gems
+                    if region.ad_claimed.claim_button.is_present():
+                        region.ad_claimed.claim_button.click()
+                    else:
+                        logging.warning("❗ Claim gem modal did not show up?!")
 
-            # Close the coin bonus modal
-            region.playing.menu.toggle.click()
+                self.resume_processes()
 
-            self.resume_processes()
+        duration = Parser(str(region.playing.ad_coin_bonus.status.read(type = ValueType.STRING))).time()
+        if isinstance(duration, int) and duration < 30 * 60 and self.not_on_cooldown():
+            with Recorder():
+                logging.info("📺 Watching ad for coin bonus")
+                self.pause_processes()
 
-            recorder.stop()
+                # Open the coin bonus modal
+                region.playing.ad_coin_bonus.click()
+
+                # wait for the modal to open fully?
+                time.sleep(0.5)
+
+                for _ in range(5):
+                    region.playing.modals.coin_bonus.watch_button.click()
+
+                    # wait for the ad to load / fail
+                    time.sleep(5)
+
+                    if region.playing.modals.ad_failed.ok_button.is_present():
+                        logging.warning("⚠️ Could not load ad, will wait 5 minutes before trying again")
+                        self.failed_at = time.time()
+
+                        region.playing.modals.ad_failed.ok_button.click()
+                        break
+                    else:
+                        # wait for the ad to finish
+                        time.sleep(65)
+
+                        self.close_ad()
+
+                    # wait for the ad to close properly
+                    time.sleep(1)
+
+                # Close the coin bonus modal
+                region.playing.menu.toggle.click()
+
+                self.resume_processes()
 
 adwatcher = AdWatcher()
