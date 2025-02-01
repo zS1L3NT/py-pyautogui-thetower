@@ -2,6 +2,7 @@ from regions.game import region
 from ..data import data
 from ..process import Process
 import logging
+import time
 
 class Reader(Process):
     id = "READER"
@@ -19,6 +20,8 @@ class Reader(Process):
                 logging.info(f"🏆 Wave increased: {data.wave} + {wave - data.wave} = {wave}")
                 data.wave = int(wave)
 
+        time.sleep(1)
+
         coins = region.playing.resources.coins.read()
         if isinstance(coins, (int, float)):
             coins = int(coins)
@@ -26,11 +29,15 @@ class Reader(Process):
                 logging.info(f"💰 Coins increased: {data.coins} + {coins - data.coins} = {coins}")
                 data.coins = int(coins)
 
+        time.sleep(1)
+
         gems = region.playing.resources.gems.read()
         if isinstance(gems, (int, float)):
             gems = int(gems)
             if data.gems != gems and self.believable(data.gems, gems):
                 logging.info(f"💎 Gems increased: {data.gems} + {gems - data.gems} = {gems}")
                 data.gems = int(gems)
+
+        time.sleep(1)
 
 reader = Reader()
