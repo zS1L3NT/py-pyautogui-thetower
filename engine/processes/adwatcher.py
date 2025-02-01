@@ -6,7 +6,6 @@ from utilities.windows import switch_to_game
 from .algorithm import algorithm
 from .reader import reader
 from ..process import Process
-import pyautogui as ui
 import logging
 import time
 
@@ -46,8 +45,6 @@ class AdWatcher(Process):
         else:
             logging.info("➡️ Right ad closing mechanism")
             region.ad.right_close_button.click()
-
-            ui.press("enter")
 
             time.sleep(1)
 
