@@ -1,5 +1,5 @@
 from regions.game import game_region
-from utilities.parser import ValueType
+from utilities.parser import Parser, ValueType
 from utilities.windows import switch_to_game
 from .algorithm import algorithm
 from .reader import reader
@@ -95,7 +95,8 @@ class AdWatcher(Process):
 
             recorder.stop()
 
-        if playing_region.ad_coin_bonus.status.read(type = ValueType.STRING) == "Inactive" and self.not_on_cooldown():
+        duration = Parser(str(playing_region.ad_coin_bonus.status.read(type = ValueType.STRING))).time()
+        if isinstance(duration, int) and duration < 30 * 60 and self.not_on_cooldown():
             recorder.start()
 
             logging.info("📺 Watching ad for coin bonus")
@@ -107,7 +108,7 @@ class AdWatcher(Process):
             # wait for the modal to open fully?
             time.sleep(0.5)
 
-            for _ in range(3):
+            for _ in range(5):
                 playing_region.modals.coin_bonus.watch_button.click()
 
                 # wait for the ad to load / fail

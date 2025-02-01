@@ -11,6 +11,7 @@ class ValueType(Enum):
     PER_METER = rf"{NUMBER}\s?\/\s?m"
     PER_SECOND = rf"{NUMBER}\s?\/\s?s(?:ec)?"
     COST = rf"\$\s?{NUMBER}|Max"
+    TIME = r"(Inactive)|(?:(\d+)h )?(\d+)m (\d+)s"
 
     NUMBER_SLASH_NUMBER = rf"{NUMBER}\s?\/\s?{NUMBER}"
 
@@ -37,6 +38,8 @@ class ValueType(Enum):
                 return f"/s{numbers}"
             case ValueType.COST:
                 return f"$ax{numbers}{multipliers}"
+            case ValueType.TIME:
+                raise Exception("This should not be called")
             case ValueType.NUMBER_SLASH_NUMBER:
                 return f"/{numbers}"
 
@@ -63,6 +66,14 @@ class Parser:
                 return match.group(1)
             elif type == ValueType.COST:
                 return self.__flatten(match.group(1)) if match.group(1) is not None else float('inf')
+            elif type == ValueType.TIME:
+                print(match.group(1))
+                if match.group(1) == "Inactive":
+                    return 0
+                elif match.group(2) is not None:
+                    return (int(match.group(1)) * 60) + int(match.group(2))
+                else:
+                    return (int(match.group(1)) * 60 * 60) + (int(match.group(2)) * 60) + int(match.group(3))
             else:
                 return self.__flatten(match.group(1))
 
@@ -92,6 +103,9 @@ class Parser:
     
     def cost(self):
         return self.type(ValueType.COST)
+
+    def time(self):
+        return self.type(ValueType.TIME)
 
     def number_slash_number(self) -> tuple[float, float] | None:
         match = re.search(ValueType.NUMBER_SLASH_NUMBER.value, self.value)
