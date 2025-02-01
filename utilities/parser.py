@@ -69,10 +69,10 @@ class Parser:
             elif type == ValueType.TIME:
                 if match.group(1) == "Inactive":
                     return 0
-                elif match.group(2) is not None:
-                    return (int(match.group(1)) * 60) + int(match.group(2))
+                elif match.group(2) is None:
+                    return (int(match.group(3)) * 60) + int(match.group(4))
                 else:
-                    return (int(match.group(1)) * 60 * 60) + (int(match.group(2)) * 60) + int(match.group(3))
+                    return (int(match.group(2)) * 60 * 60) + (int(match.group(3)) * 60) + int(match.group(4))
             else:
                 return self.__flatten(match.group(1))
 
