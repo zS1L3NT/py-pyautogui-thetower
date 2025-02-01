@@ -1,10 +1,10 @@
 from constants import *
+from telegram.api import TelegramAPI
 from utilities.parser import Parser, ValueType
 from PIL import Image
 import pyautogui as ui
 import imagehash
 import pytesseract # type: ignore
-import logging
 import time
 import os
 
@@ -35,9 +35,9 @@ class Region:
             folder_name = os.path.join("logs", "images", time.strftime("%Y-%m-%d %H-%M-%S"))
             os.mkdir(folder_name)
 
-            ui.screenshot().save(os.path.join(folder_name, f"screenshot.png"))
-            ui.screenshot(region = self.compact()).save(os.path.join(folder_name, f"actual.png"))
+            ui.screenshot().save(os.path.join(folder_name, "screenshot.png"))
             os.system(f"cp \"{self.image}\" \"{os.path.join(folder_name, "expected.png")}\"")
+            ui.screenshot(region = self.compact()).save(os.path.join(folder_name, "actual.png"))
 
             with open(os.path.join(folder_name, "info.log"), "w") as file:
                 file.write("\n".join([
@@ -47,11 +47,14 @@ class Region:
                     f"width: {self.width}",
                     f"height: {self.height}",
                 ]))
+            
+            TelegramAPI.send_media_group([
+                ("photo", "Screenshot", os.path.join(folder_name, "screenshot.png")),
+                ("photo", "Expected", os.path.join(folder_name, "expected.png")),
+                ("photo", "Actual", os.path.join(folder_name, "actual.png")),
+            ])
 
-            try:
-                raise Exception(f"Element is not present, cannot click!")
-            except:
-                logging.error(f"❗ Element {self.id} is not present, cannot click!", exc_info = True)
+            raise Exception(f"Element is not present, cannot click!")
 
         ui.leftClick(self.x + self.width / 2, self.y + self.height / 2)
 

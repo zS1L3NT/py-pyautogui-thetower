@@ -1,6 +1,6 @@
 from constants import *
 from engine import engine
-from telegram import TelegramHandler
+from telegram.handler import TelegramHandler
 import pyautogui as ui
 import threading
 import logging
