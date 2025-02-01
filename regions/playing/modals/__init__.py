@@ -4,6 +4,7 @@ from .game_over import GameOverRegion
 from .upgrade_progress import UpgradeProgressRegion
 from .end_game import EndGameRegion
 from .coin_bonus import CoinBonusRegion
+from .ad_failed import AdFailedRegion
 
 class ModalsRegion(Region):
     width = GAME_WIDTH
@@ -13,3 +14,4 @@ class ModalsRegion(Region):
     upgrade_progress = UpgradeProgressRegion()
     end_game = EndGameRegion()
     coin_bonus = CoinBonusRegion()
+    ad_failed = AdFailedRegion()

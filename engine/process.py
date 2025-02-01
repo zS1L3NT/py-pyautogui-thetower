@@ -11,13 +11,13 @@ class Process:
         return self.__stop_event.is_set()
 
     def start(self):
-        logging.info(f"▶︎ Starting {self.id.lower()} thread")
+        logging.info(f"▶︎ Starting {self.id.lower()} process")
         self.__stop_event = Event()
         self.__thread = Thread(target = self.run, name = self.id)
         self.__thread.start()
 
     def stop(self):
-        logging.info(f"⏸︎ Stopping {self.id.lower()} thread")
+        logging.info(f"⏸︎ Stopping {self.id.lower()} process")
         self.__stop_event.set()
 
     def run(self):

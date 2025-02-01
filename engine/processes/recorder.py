@@ -1,18 +1,21 @@
-from threading import Thread
+from subprocess import Popen, PIPE
 import logging
 import time
-import os
 
 class Recorder:
     id = "RECORDER"
+    process: Popen[bytes]
 
-    def start(self, duration: int = 10):
-        logging.info(f"▶︎ Starting {self.id.lower()} thread")
-        thread = Thread(target = self.run, args = (duration,), name = self.id)
-        thread.start()
+    def start(self):
+        logging.info(f"▶︎ Starting {self.id.lower()}")
+        self.process = Popen(f"screencapture -v \"logs/videos/{time.strftime("%Y-%m-%d %H-%M-%S")}.mp4\"", stdin = PIPE, stdout = PIPE, shell = True)
 
-    def run(self, duration: int):
-        os.system(f"screencapture -V{duration} \"logs/videos/{time.strftime("%Y-%m-%d %H-%M-%S")}.mp4\"")
-        logging.info(f"⏸︎ Stopping {self.id.lower()} thread")
+        time.sleep(1)
+
+    def stop(self):
+        time.sleep(1)
+
+        logging.info(f"⏸︎ Stopping {self.id.lower()}")
+        self.process.communicate(input = b" ")
 
 recorder = Recorder()
