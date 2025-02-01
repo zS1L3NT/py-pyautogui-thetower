@@ -5,6 +5,7 @@ from .left_close_button import LeftCloseButtonRegion
 from .right_close_button import RightCloseButtonRegion
 
 class AdRegion(Region):
+    id = "ad"
     width = GAME_WIDTH
     height = GAME_HEIGHT
 

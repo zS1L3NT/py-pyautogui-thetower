@@ -7,6 +7,7 @@ from .coin_bonus import CoinBonusRegion
 from .ad_failed import AdFailedRegion
 
 class ModalsRegion(Region):
+    id = "playing.modals"
     width = GAME_WIDTH
     height = GAME_HEIGHT
 

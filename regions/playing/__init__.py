@@ -13,6 +13,7 @@ from .categories import CategoriesRegion
 from .modals import ModalsRegion
 
 class PlayingRegion(Region):
+    id = "playing"
     width = GAME_WIDTH
     height = GAME_HEIGHT
 

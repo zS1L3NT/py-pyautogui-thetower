@@ -5,7 +5,7 @@ from regions.ad import AdRegion
 from regions.ad_claimed import AdClaimedRegion
 
 class GameRegion(Region):
-    id = "game"
+    id = "#"
     x = GAME_X
     y = GAME_Y
     width = GAME_WIDTH
