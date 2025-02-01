@@ -15,14 +15,14 @@ class Reader(Process):
         wave = region.playing.enemies.wave.read()
         if isinstance(wave, (int, float)):
             wave = int(wave)
-            if data.wave != wave and self.believable(data.wave, wave):
+            if data.wave != wave and self.believable(data.wave, wave) and wave - data.wave >= 10:
                 logging.info(f"🏆 Wave increased: {data.wave} + {wave - data.wave} = {wave}")
                 data.wave = int(wave)
 
         coins = region.playing.resources.coins.read()
         if isinstance(coins, (int, float)):
             coins = int(coins)
-            if data.coins != coins and self.believable(data.coins, coins) and coins - data.coins >= 1000:
+            if data.coins != coins and self.believable(data.coins, coins) and coins - data.coins >= 10000:
                 logging.info(f"💰 Coins increased: {data.coins} + {coins - data.coins} = {coins}")
                 data.coins = int(coins)
 
