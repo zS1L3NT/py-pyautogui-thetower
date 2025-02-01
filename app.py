@@ -1,6 +1,7 @@
 from engine import engine
 from constants import *
 import pyautogui as ui
+import threading
 import logging
 import time
 import sys
@@ -8,6 +9,7 @@ import sys
 ui.MINIMUM_DURATION = 0.005
 ui.MINIMUM_SLEEP = 0.005
 
+threading.current_thread().name = "MAIN"
 logging.basicConfig(
     handlers=[
         logging.FileHandler(f"logs/{time.strftime('%Y-%m-%d %H-%M-%S')}.log"),
