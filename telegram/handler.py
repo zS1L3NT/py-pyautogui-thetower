@@ -10,8 +10,10 @@ class TelegramHandler(logging.Handler):
         if record.exc_info:
             message = "".join(traceback.format_exception(*record.exc_info))
 
-        response = TelegramAPI.send_message(f"```{thread}\n{message}\n```")
-
-        if not self.pinned:
-            self.pinned = True
-            TelegramAPI.pin_message(response.json()['result']['message_id'])
+        try:
+            response = TelegramAPI.send_message(f"```{thread}\n{message}\n```")
+            if not self.pinned:
+                self.pinned = True
+                TelegramAPI.pin_message(response.json()['result']['message_id'])
+        except:
+            pass

@@ -6,6 +6,7 @@ from PIL import Image
 import pyautogui as ui
 import imagehash
 import pytesseract # type: ignore
+import logging
 import time
 import os
 
@@ -49,11 +50,14 @@ class Region:
                     f"height: {self.height}",
                 ]))
             
-            TelegramAPI.send_media_group([
-                ("photo", "Screenshot", os.path.join(folder_name, "screenshot.png")),
-                ("photo", "Expected", os.path.join(folder_name, "expected.png")),
-                ("photo", "Actual", os.path.join(folder_name, "actual.png")),
-            ])
+            try:
+                TelegramAPI.send_media_group([
+                    ("photo", "Screenshot", os.path.join(folder_name, "screenshot.png")),
+                    ("photo", "Expected", os.path.join(folder_name, "expected.png")),
+                    ("photo", "Actual", os.path.join(folder_name, "actual.png")),
+                ])
+            except:
+                logging.error(f"❗ Failed to send video to Telegram")
 
             raise Exception(f"Element is not present, cannot click!")
 
