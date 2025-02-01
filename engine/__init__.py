@@ -5,8 +5,7 @@ from utilities.windows import switch_to_game, center_game
 from .processes.adwatcher import adwatcher
 from .processes.algorithm import algorithm
 from .processes.reader import reader
-from .data import data
-import time
+from .processes.retry import retry
 
 class Engine:
     def start(self):
@@ -56,12 +55,6 @@ class Engine:
 
         adwatcher.start()
         algorithm.start()
-
-        while True:
-            if playing_region.modals.game_over.is_present():
-                print("[ENGINE] Game over modal is present, retrying")
-                playing_region.modals.game_over.retry_button.click()
-                data.reset()
-            time.sleep(3)
+        retry.start()
 
 engine = Engine()

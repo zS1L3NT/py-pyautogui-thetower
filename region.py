@@ -15,8 +15,6 @@ class Region:
     height = 0
     image = None
 
-    cached = None
-
     def difference(self, reference: Image.Image) -> int:
         subject = ui.screenshot(region = self.compact())
 
@@ -27,28 +25,22 @@ class Region:
 
     def is_present(self, acceptable_difference: int = 5):
         if self.image:
-            # print(f"[RID: {self.id}] >>> Checking if element is visible...")
-
-            difference = self.difference(Image.open(self.image))
-
-            if difference > acceptable_difference:
-                # print(f"[RID: {self.id}] <<< Element is not present, difference is too large: {difference}")
-                return False
-            else:
-                # print(f"[RID: {self.id}] <<< Element is present, difference is small enough: {difference}")
-                return True
+            return self.difference(Image.open(self.image)) <= acceptable_difference
         else:
             raise Exception(f"Cannot check {self.id} without image")
 
     def click(self):
         if self.image and not self.is_present():
-            folder_name = os.path.join("logs", "errors", time.strftime("%Y-%m-%d %H-%M-%S"))
+            folder_name = os.path.join("logs", "images", time.strftime("%Y-%m-%d %H-%M-%S"))
             os.mkdir(folder_name)
 
             ui.screenshot().save(os.path.join(folder_name, f"screenshot.png"))
-            ui.screenshot(region = self.compact()).save(os.path.join(folder_name, f"region.png"))
-            with open(os.path.join(folder_name, "log.txt"), "w") as file:
+            ui.screenshot(region = self.compact()).save(os.path.join(folder_name, f"actual.png"))
+            os.system(f"cp \"{self.image}\" \"{os.path.join(folder_name, "expected.png")}\"")
+
+            with open(os.path.join(folder_name, "info.log"), "w") as file:
                 file.write("\n".join([
+                    f"region: {self.id}",
                     f"x: {self.x}",
                     f"y: {self.y}",
                     f"width: {self.width}",
@@ -57,7 +49,6 @@ class Region:
 
             raise Exception(f"Element is not present, cannot click!")
 
-        # print(f"[RID: {self.id}] Clicking...")
         ui.leftClick(self.x + self.width / 2, self.y + self.height / 2)
 
     def read(
@@ -70,8 +61,6 @@ class Region:
             config += f" -c tessedit_char_whitelist=\"{type.characters()}\""
 
         for _ in range(5):
-            # print(f"[RID: {self.id}] >>> Reading with config \"{config}\" ({i + 1}/{retries})")
-
             image = ui.screenshot(region = self.compact()).convert("RGB")
             pixels: list[tuple[int, int, int]] = list(image.getdata()) # type: ignore
             processed = Image.new("RGB", image.size)
@@ -82,17 +71,11 @@ class Region:
 
             string = str(pytesseract.image_to_string(processed, config = config)).strip() # type: ignore
 
-            # print(f"[RID: {self.id}] OCR result: \"{string}\", parsing as {type.name}")
-
             value = Parser(string).type(type)
             if value is None:
-                # print(f"[RID: {self.id}] ❔ Failed to parse \"{string}\" as {type.name}, retrying...")
                 continue
 
-            # print(f"[RID: {self.id}] <<< Parsed OCR result: {value}")
             return value
-
-        # print(f"[RID: {self.id}] ❌ Failed to parse OCR result after 5 retries!!!")
 
     def cascade(self):
         properties = [getattr(self, key) for key in dir(self)]

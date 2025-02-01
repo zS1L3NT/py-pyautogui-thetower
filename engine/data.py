@@ -1,5 +1,6 @@
 class Data:
     wave: int
+    gems: int
     attack: list[bool]
     defence: list[bool]
     utility: list[bool]
@@ -11,6 +12,7 @@ class Data:
 
     def reset(self):
         self.wave = 0
+        self.gems = 0
 
         self.attack = [False] * 13
         self.defence = [False] * 15

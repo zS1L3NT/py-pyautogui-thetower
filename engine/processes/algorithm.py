@@ -4,6 +4,7 @@ from utilities.parser import ValueType
 from regions.game import game_region
 from ..data import data
 from ..process import Process
+import logging
 import time
 
 class Algorithm(Process):
@@ -52,7 +53,7 @@ class Algorithm(Process):
                     if not category[upgrade_index]:
                         category[upgrade_index] = self.handle_one(region)
                         if category[upgrade_index]:
-                            self.log(f"✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
+                            logging.info(f"✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
 
                     upgrade_index += 1
                     remaining -= 1
@@ -86,7 +87,7 @@ class Algorithm(Process):
                     if not category[upgrade_index]:
                         category[upgrade_index] = self.handle_one(region)
                         if category[upgrade_index]:
-                            self.log(f"✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
+                            logging.info(f"✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
 
                     upgrade_index += 1
                     remaining -= 1
@@ -107,7 +108,7 @@ class Algorithm(Process):
                 if not category[upgrade_index]:
                     category[upgrade_index] = self.handle_one(region)
                     if category[upgrade_index]:
-                        self.log(f"✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
+                        logging.info(f"✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
                 upgrade_index += 1
                 remaining -= 1
 
