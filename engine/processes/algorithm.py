@@ -1,7 +1,7 @@
 from constants import *
 from regions.playing.upgrades import UpgradeRegion
 from utilities.parser import ValueType
-from regions.game import game_region
+from regions.game import region
 from ..data import data
 from ..process import Process
 import logging
@@ -10,17 +10,15 @@ import time
 class Algorithm(Process):
     id = "ALGORITHM"
 
-    def handle_one(self, region: UpgradeRegion):
+    def handle_one(self, upgrade_region: UpgradeRegion):
         for _ in range(5):
-            region.value.click()
-        return region.cost.read(type = ValueType.COST) == float('inf')
+            upgrade_region.value.click()
+        return upgrade_region.cost.read(type = ValueType.COST) == float('inf')
 
     def iteration(self):
-        playing_region = game_region.playing
-
         # Collect gems
         for _ in range(5):
-            for gem_point in playing_region.tower.gem_points:
+            for gem_point in region.playing.tower.gem_points:
                 if super().is_stopped(): return
 
                 gem_point.click()
@@ -31,7 +29,7 @@ class Algorithm(Process):
                 continue
 
             if data.wave >= 50:
-                playing_region.categories.all[category_index].click()
+                region.playing.categories.all[category_index].click()
 
             upgrade_index = 0
             remaining = len(category)
@@ -40,18 +38,18 @@ class Algorithm(Process):
 
             # Read until near the end
             while remaining >= 5:
-                regions = [
-                    playing_region.upgrades.first_left,
-                    playing_region.upgrades.first_right,
-                    playing_region.upgrades.second_left,
-                    playing_region.upgrades.second_right,
+                upgrade_regions = [
+                    region.playing.upgrades.first_left,
+                    region.playing.upgrades.first_right,
+                    region.playing.upgrades.second_left,
+                    region.playing.upgrades.second_right,
                 ]
 
-                for region in regions:
+                for upgrade_region in upgrade_regions:
                     if super().is_stopped(): return
 
                     if not category[upgrade_index]:
-                        category[upgrade_index] = self.handle_one(region)
+                        category[upgrade_index] = self.handle_one(upgrade_region)
                         if category[upgrade_index]:
                             logging.info(f"✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
 
@@ -65,7 +63,7 @@ class Algorithm(Process):
                 if remaining >= 5:
                     if super().is_stopped(): return
 
-                    playing_region.upgrades.scroll(2)
+                    region.playing.upgrades.scroll(2)
 
             if remaining == -1:
                 continue
@@ -74,18 +72,18 @@ class Algorithm(Process):
 
             # Remaining 1 ~ 4
             if remaining >= 3:
-                playing_region.upgrades.scroll(1)
+                region.playing.upgrades.scroll(1)
 
-                regions = [
-                    playing_region.upgrades.second_left,
-                    playing_region.upgrades.second_right,
+                upgrade_regions = [
+                    region.playing.upgrades.second_left,
+                    region.playing.upgrades.second_right,
                 ]
 
-                for region in regions:
+                for upgrade_region in upgrade_regions:
                     if super().is_stopped(): return
 
                     if not category[upgrade_index]:
-                        category[upgrade_index] = self.handle_one(region)
+                        category[upgrade_index] = self.handle_one(upgrade_region)
                         if category[upgrade_index]:
                             logging.info(f"✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
 
@@ -95,18 +93,18 @@ class Algorithm(Process):
             if super().is_stopped(): return
                 
             # Remaining 1 ~ 2
-            playing_region.upgrades.scroll_last(1)
+            region.playing.upgrades.scroll_last(1)
 
-            regions = [playing_region.upgrades.last_left] if remaining == 1 else [
-                playing_region.upgrades.last_left,
-                playing_region.upgrades.last_right,
+            upgrade_regions = [region.playing.upgrades.last_left] if remaining == 1 else [
+                region.playing.upgrades.last_left,
+                region.playing.upgrades.last_right,
             ]
 
-            for region in regions:
+            for upgrade_region in upgrade_regions:
                 if super().is_stopped(): return
 
                 if not category[upgrade_index]:
-                    category[upgrade_index] = self.handle_one(region)
+                    category[upgrade_index] = self.handle_one(upgrade_region)
                     if category[upgrade_index]:
                         logging.info(f"✅ MAXED {CATEGORIES[category_index]}/{UPGRADES[category_index][upgrade_index]}")
                 upgrade_index += 1
@@ -120,6 +118,6 @@ class Algorithm(Process):
             items -= 6
             items /= 2
 
-            playing_region.upgrades.scroll(-int(items) - 1)
+            region.playing.upgrades.scroll(-int(items) - 1)
 
 algorithm = Algorithm()
