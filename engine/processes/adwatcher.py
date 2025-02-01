@@ -4,6 +4,7 @@ from utilities.windows import switch_to_game
 from .algorithm import algorithm
 from .reader import reader
 from .retry import retry
+from .recorder import recorder
 from ..process import Process
 import pyautogui as ui
 import logging
@@ -27,6 +28,8 @@ class AdWatcher(Process):
         retry.start()
 
     def close_ad(self):
+        recorder.start()
+
         # Left ads seem to not have a second screen
         if game_region.ad.left_close_button.read(type = ValueType.STRING) in ["x", "X"]:
             logging.info("⬅️ Left ad closing mechanism")
