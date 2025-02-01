@@ -10,7 +10,7 @@ import logging
 
 class Engine:
     def start(self, timestamp: str):
-        logging.info(f"Starting engine @ {timestamp}")
+        logging.info(f"🆕 Starting engine @ {timestamp}")
         
         try:
             switch_to_game()
