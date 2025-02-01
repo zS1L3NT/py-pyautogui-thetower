@@ -24,6 +24,9 @@ class Recorder:
 
         time.sleep(3)
 
-        TelegramAPI.send_video(self.video_path)
+        try:
+            TelegramAPI.send_video(self.video_path)
+        except:
+            logging.error(f"❗ Failed to send video to Telegram")
 
 recorder = Recorder()
