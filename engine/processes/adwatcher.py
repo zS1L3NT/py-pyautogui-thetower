@@ -37,13 +37,16 @@ class AdWatcher(Process):
 
     def close_ad(self):
         # Left ads seem to not have a second screen
-        is_valid: Callable[[object], bool] = lambda value: isinstance(value, str) and "x" in value.lower() and "reward" in value.lower() and "granted" in value.lower()
+        is_reward_granted: Callable[[object], bool] = lambda value: isinstance(value, str) and "x" in value.lower() and "reward" in value.lower() and "granted" in value.lower()
 
-        if region.ad.left_close_area.read(type = ValueType.STRING, is_valid = is_valid) is not None:
-            logging.info("⬅️ Left ad closing mechanism")
-            region.ad.left_close_button.click()
+        if region.ad.left_reward_granted.read(type = ValueType.STRING, is_valid = is_reward_granted) is not None:
+            logging.info("⬅️ Left reward granted mechanism")
+            region.ad.left_reward_granted.close_button.click()
+        elif region.ad.right_reward_granted.read(type = ValueType.STRING, is_valid = is_reward_granted) is not None:
+            logging.info("➡️ Right reward granted mechanism")
+            region.ad.right_reward_granted.close_button.click()
         else:
-            logging.info("➡️ Right ad closing mechanism")
+            logging.info("➡️ Right closing mechanism")
             region.ad.right_close_button.click()
 
             time.sleep(1)
