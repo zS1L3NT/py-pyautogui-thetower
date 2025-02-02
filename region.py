@@ -73,7 +73,7 @@ class Region:
         if type.characters() is not None:
             config += f" -c tessedit_char_whitelist=\"{type.characters()}\""
 
-        for _ in range(5):
+        for _ in range(10):
             image = ui.screenshot(region = self.compact()).convert("RGB")
             pixels: list[tuple[int, int, int]] = list(image.getdata()) # type: ignore
             processed = Image.new("RGB", image.size)

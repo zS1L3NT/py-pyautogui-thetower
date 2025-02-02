@@ -91,7 +91,7 @@ class AdWatcher(Process):
                 self.resume_processes()
 
         duration = Parser(str(region.playing.ad_coin_bonus.status.read(type = ValueType.STRING))).time()
-        if isinstance(duration, int) and duration < 30 * 60 and self.not_on_cooldown():
+        if isinstance(duration, int) and duration < 60 * 60 and self.not_on_cooldown():
             with Recorder():
                 logging.info("📺 Watching ad for coin bonus")
                 self.pause_processes()
@@ -102,26 +102,25 @@ class AdWatcher(Process):
                 # wait for the modal to open fully?
                 time.sleep(0.5)
 
-                for _ in range(5):
-                    region.playing.modals.coin_bonus.watch_button.click()
+                region.playing.modals.coin_bonus.watch_button.click()
 
-                    # wait for the ad to load / fail
-                    time.sleep(5)
+                # wait for the ad to load / fail
+                time.sleep(5)
 
-                    if region.playing.modals.ad_failed.ok_button.is_present():
-                        logging.warning("⚠️ Could not load ad, will wait 5 minutes before trying again")
-                        self.failed_at = time.time()
+                if region.playing.modals.ad_failed.ok_button.is_present():
+                    logging.warning("⚠️ Could not load ad, will wait 5 minutes before trying again")
+                    self.failed_at = time.time()
 
-                        region.playing.modals.ad_failed.ok_button.click()
-                        break
-                    else:
-                        # wait for the ad to finish
-                        time.sleep(65)
+                    region.playing.modals.ad_failed.ok_button.click()
+                else:
+                    # wait for the ad to finish
+                    time.sleep(65)
 
-                        self.close_ad()
+                    self.close_ad()
 
-                    # wait for the ad to close properly
-                    time.sleep(1)
+                    # expect the coin bonus modal to still be open
+                    if not region.playing.modals.coin_bonus.watch_button.is_present():
+                        logging.warning("❗ Coins bonus modal did not show up?!")
 
                 # Close the coin bonus modal
                 region.playing.menu.toggle.click()
