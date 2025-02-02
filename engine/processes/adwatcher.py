@@ -78,7 +78,7 @@ class AdWatcher(Process):
                     region.playing.modals.ad_failed.ok_button.click()
                 else:
                     # wait for the ad to finish
-                    time.sleep(65)
+                    time.sleep(75)
 
                     self.close_ad()
 
@@ -114,7 +114,7 @@ class AdWatcher(Process):
                     region.playing.modals.ad_failed.ok_button.click()
                 else:
                     # wait for the ad to finish
-                    time.sleep(65)
+                    time.sleep(75)
 
                     self.close_ad()
 
